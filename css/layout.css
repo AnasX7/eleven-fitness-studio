@@ -36,6 +36,18 @@
   display: none;
 }
 
+.language-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+}
+
 .nav-links {
   gap: 0.5rem;
   padding: 0;
@@ -355,4 +367,14 @@
     margin-inline-start: 0;
     text-align: start;
   }
+}
+
+/* ARABIC HERO DIRECTION */
+
+[dir="rtl"] .hero-image {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .hero {
+  --hero-direction: 270deg;
 }

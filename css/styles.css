@@ -188,6 +188,7 @@ h3 {
 }
 
 .nav-links a:is(:hover, :focus-visible),
+.language-link:is(:hover, :focus-visible),
 .mobile-menu summary:is(:hover, :focus-visible),
 .mobile-menu[open] summary,
 .text-link:is(:hover, :focus-visible) {
@@ -265,6 +266,10 @@ h1 span {
   --icon-shift: 3px;
 }
 
+[dir="rtl"] .icon-diagonal {
+  --icon-shift: -3px;
+}
+
 /* SHARED PHONE SIZING */
 
 @media (max-width: 767px) {
@@ -275,6 +280,46 @@ h1 span {
   h1 {
     font-size: clamp(2.4rem, 9.5vw, 3.6rem);
   }
+}
+
+/* ARABIC FONT AND TYPOGRAPHY */
+
+[lang="ar"] {
+  font-feature-settings: "salt" 1;
+}
+
+[lang="ar"] h1,
+[lang="ar"] h2 {
+  line-height: 1.45;
+}
+
+[lang="ar"] .brand,
+[lang="ar"] .brand-caption,
+[lang="ar"] .footer-heading,
+[lang="ar"] .footer-wordmark,
+[lang="ar"] .day {
+  letter-spacing: normal;
+}
+
+[lang="ar"] .brand-caption {
+  font-size: 0.75rem;
+}
+
+[lang="ar"] .footer-wordmark {
+  line-height: 1.3;
+}
+
+[lang="ar"] .footer-note {
+  align-self: flex-end;
+}
+
+[lang="ar"] .brand {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+[lang="ar"] .day {
+  font-size: 0.85rem;
 }
 
 /* OPTIONAL HOVER MOTION */
@@ -288,6 +333,7 @@ h1 span {
 
   .button,
   .nav-links a,
+  .language-link,
   .mobile-menu summary,
   .text-link {
     transition: background-color 250ms ease-in-out, color 250ms ease-in-out, border-color 250ms ease-in-out, transform 250ms ease-in-out;
