@@ -4,26 +4,26 @@ import SaveToggle from './SaveToggle';
 
 export default function ClassCard({ session, trainer, language, saved, onSavedChange }) {
   return (
-    <li className="class-row" data-class-id={session.id}>
-      <div className="class-time">
-        <span className="day">{session.day[language]}</span>
+    <li className="grid grid-cols-1 items-start gap-4 rounded-[20px] border border-border bg-surface p-4 md:grid-cols-[100px_minmax(0,1fr)_190px] md:items-center md:gap-5 md:p-6 lg:grid-cols-[120px_minmax(0,1fr)_210px]" data-class-id={session.id}>
+      <div className="flex min-w-0 flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-border pb-3 font-bold wrap-anywhere md:flex-col md:items-stretch md:justify-start md:gap-[0.2rem] md:border-e md:border-b-0 md:pe-5 md:pb-0">
+        <span className="text-[0.72rem] tracking-[0.08em] text-accent rtl:text-[0.85rem] rtl:tracking-normal">{session.day[language]}</span>
         <time dateTime={session.timeValue}>{session.time[language]}</time>
       </div>
-      <div className="class-description">
-        <span className="icon class-icon" aria-hidden="true"><Icon name={session.icon} /></span>
-        <div className="class-copy">
-          <h3>{session.title[language]}</h3>
-          <p>{session.description[language]}</p>
+      <div className="grid min-w-0 grid-cols-[36px_minmax(0,1fr)] items-center gap-x-3 gap-y-2 wrap-anywhere md:flex md:items-start md:gap-4">
+        <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-background text-accent md:size-11" aria-hidden="true"><Icon name={session.icon} className="size-6" /></span>
+        <div className="contents min-w-0 wrap-anywhere md:block">
+          <h3 className="text-[1.1rem] md:text-[1.3rem]">{session.title[language]}</h3>
+          <p className="col-span-full text-[0.85rem] text-muted md:mt-[0.35rem]">{session.description[language]}</p>
         </div>
       </div>
-      <div className="class-meta">
-        <span className="class-type">
-          <span className="icon" aria-hidden="true"><Icon name="clock-01" /></span>
-          <span>{session.details[language]}</span>
+      <div className="flex min-w-0 flex-wrap items-center gap-3 border-t border-border pt-3 wrap-anywhere md:flex-col md:items-start md:border-t-0 md:pt-0">
+        <span className="flex min-w-0 max-w-full flex-[1_1_8rem] items-center gap-2 text-[0.8rem] text-muted md:flex-initial md:text-[0.85rem]">
+          <span className="inline-flex size-5 shrink-0 items-center justify-center rounded-full md:size-8 md:border md:border-border" aria-hidden="true"><Icon name="clock-01" className="size-4" /></span>
+          <span className="min-w-0">{session.details[language]}</span>
         </span>
-        <p className="class-coach">
-          <img className="coach-avatar" src={trainer.image} alt="" aria-hidden="true" width="32" height="32" loading="lazy" />
-          <span>{ui[language].withCoach} {trainer.name[language]}</span>
+        <p className="flex min-w-0 max-w-full flex-[1_1_8rem] items-center gap-2 text-[0.8rem] text-muted md:flex-initial md:text-[0.85rem]">
+          <img className="size-7 shrink-0 rounded-full border border-border object-cover object-top md:size-8" src={trainer.image} alt="" aria-hidden="true" width="32" height="32" loading="lazy" />
+          <span className="min-w-0">{ui[language].withCoach} {trainer.name[language]}</span>
         </p>
         <SaveToggle value={saved} onChange={onSavedChange} label={`${session.title[language]} · ${session.day[language]}`} language={language} />
       </div>

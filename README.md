@@ -1,45 +1,77 @@
 # ELEVEN Fitness Studio
 
-A responsive fitness studio website built with semantic HTML5 and plain CSS3. Includes English and Arabic pages with fictional classes, trainers and membership plans.
+Week 2 continues the original studio website with Vite, React (JavaScript) and Tailwind CSS. The existing English and Arabic copy, five weekly classes, three trainers, membership prices, local photography and dark/lime design are preserved. All content stays local; there is no backend.
 
-## Features
+## Run locally
 
-- English and Arabic versions, including right-to-left layout.
-- Class schedule, trainer bios and membership pricing cards.
-- Dark theme and responsive navigation for phones and tablets.
-- Keyboard focus styles and reduced-motion support.
-- Local images, fonts and SVG icons. No JavaScript, frameworks or build tools.
-
-## Project structure
-
-```text
-index.html          English page
-ar.html             Arabic page
-css/
-  styles.css        Shared styles, fonts and colors
-  layout.css        Header, hero and footer
-  sections.css      Schedule, trainers and memberships
-public/assets/
-  images/           Studio and trainer photos
-  fonts/            Local Thmanyah Sans fonts
-  icons/            SVG icons, favicon and icon license
-```
-
-## Assets
-
-- Typography: Thmanyah Sans, stored locally.
-- Icons: [Hugeicons Stroke Rounded](https://hugeicons.com/icons/stroke-rounded), with the upstream [MIT license](public/assets/icons/LICENSE.txt).
-- Images: generated fictional studio photography.
-
-## Development
-
-Requires Node.js 20.19+ or 22.12+.
+Use Node.js 20.19+ or 22.12+.
 
 ```sh
 npm install
 npm run dev
+npm run check:data
 npm run build
 npm run preview
 ```
 
-Vite builds both `index.html` (English) and `ar.html` (Arabic). React components and Tailwind styles are being migrated in working increments.
+Open `/index.html` for English or `/ar.html` for Arabic. Vite builds both HTML entries, which mount the same React app. Each entry sets its language, direction, title and description. The JavaScript entry reads the document language and passes it through props. Language links reload the other page; temporary filters and saved selections reset.
+
+## Structure
+
+```text
+index.html, ar.html        Language-specific HTML entry shells
+vite.config.js            React, Tailwind and both build inputs
+src/
+  main.jsx                React mount and initial language
+  App.jsx                 Header, Main and Footer composition
+  index.css               Tailwind import, theme, local fonts and base rules
+  data/studio.js          Classes, trainers, memberships, navigation, categories and translations
+  components/
+    Header.jsx, Hero.jsx, Main.jsx, Footer.jsx
+    ClassCard.jsx, TrainerCard.jsx, MembershipCard.jsx
+    SaveToggle.jsx         Reusable controlled item toggle
+    Brand.jsx, Icon.jsx, ArrowIcon.jsx
+scripts/check-data.js      Node assertions; no testing libraries
+public/assets/             Original local images, fonts, icons and license
+```
+
+`Main` renders the Hero and three content sections inside one semantic main element. Repeated content comes from arrays of objects and is rendered with `map` and stable IDs. Monday and Thursday's Strength classes have separate session IDs.
+
+## Interactions and assessment concepts
+
+- `Main` owns `category` with `useState`. Selecting a filter updates that state. `filter` derives the visible classes without changing the source array or storing a second list in state.
+- `Main` also owns `savedById`, an object keyed by session ID. A functional state update copies the previous object and changes one session's value.
+- `ClassCard` receives its saved value and change callback. It passes them to `SaveToggle` as `value` and `onChange`, following the controlled QuantityStepper pattern. The toggle has no internal state; it calls `onChange(!value)`.
+- Saved values remain in `Main` when filtering unmounts a class card, so returning to All restores its selection. Another class's selection stays independent.
+- Both languages use the same session IDs and category values. Translated text lives in the data file. RTL utilities and logical spacing preserve the Arabic layout.
+- Unprefixed Tailwind classes describe the phone layout. `md:` and `lg:` adapt the existing tablet and desktop layout. Motion is enabled only with `motion-safe:`.
+
+This implementation uses the instructor example to understand React patterns, while retaining this repository's own design, assets and content.
+
+## Validation
+
+`npm run check:data` checks unique IDs, trainer references, supported filter categories, image paths, original prices and complete English/Arabic translations. `npm run build` produces both language entries; check them through `npm run preview` as well as the dev server. There is no lint script or additional testing dependency.
+
+Check both languages at **375px, 768px and 1440px**:
+
+1. All shows five classes. Strength shows two; Conditioning, Mobility and Mixed training each show one. All restores the original order. Filter buttons expose their selected state with `aria-pressed`.
+2. Save Monday's Strength class: Thursday remains unsaved. Save a second class, switch filters and return to All: both selections remain. Unsave one: the other remains saved. Reload or change language: temporary selections reset.
+3. Use Tab, Enter and Space to operate links, filters, save toggles and the native mobile menu. Focus must remain visible. Trainer and membership links must reach their target anchors.
+4. Check the header, hero crop/overlay, schedule, trainer cards, featured membership and footer against the original design. Images and local font weights must load. Confirm Arabic text, numerals, RTL spacing and arrow direction.
+5. Confirm no horizontal scrolling, including with the menu open and enlarged text. In the browser console, run:
+
+   ```js
+   console.assert(document.documentElement.scrollWidth <= document.documentElement.clientWidth);
+   ```
+
+6. With reduced motion enabled, smooth scrolling and optional transitions should stop. Check the console for errors and missing assets.
+
+During migration, the production build, browser assertions and screenshots were checked at each meaningful stage. Browser automation uses externally available tooling rather than adding a library to this project.
+
+## Branches and assets
+
+- `codex/week-1-html-css` preserves the original implementation.
+- `codex/week-2-react-tailwind` contains the Week 2 migration.
+- `main` is unchanged until an explicitly authorized merge.
+
+Typography: local Thmanyah Sans. Icons: [Hugeicons Stroke Rounded](https://hugeicons.com/icons/stroke-rounded), with the upstream [MIT license](public/assets/icons/LICENSE.txt). Images: generated fictional studio photography.

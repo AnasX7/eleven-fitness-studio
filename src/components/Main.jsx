@@ -15,13 +15,13 @@ export default function Main({ language }) {
     ? classes
     : classes.filter((session) => session.category === category);
   return (
-    <main className="main-frame">
+    <main className="mx-auto w-full max-w-[1248px] border-x border-border">
       <Hero language={language} />
-      <section className="section schedule-section" id="schedule" aria-labelledby="schedule-title">
-        <div className="container">
-          <div className="section-heading">
+      <section className="relative py-12 before:pointer-events-none before:absolute before:top-0 before:left-1/2 before:w-[100cqw] before:-translate-x-1/2 before:border-t before:border-border md:py-16 lg:py-20" id="schedule" aria-labelledby="schedule-title">
+        <div className="mx-auto w-full max-w-[1248px] px-5 md:px-6">
+          <div className="mb-8 max-w-[780px]">
             <h2 id="schedule-title">{copy.scheduleTitle}</h2>
-            <p>{copy.scheduleDescription}</p>
+            <p className="mt-3 max-w-[52ch] text-muted">{copy.scheduleDescription}</p>
           </div>
           <div className="mb-4 flex flex-wrap gap-2" role="group" aria-label={copy.filterLabel}>
             {categories.map((option) => (
@@ -37,10 +37,10 @@ export default function Main({ language }) {
               </button>
             ))}
           </div>
-          <div className="schedule-intro">
-            <p className="schedule-label"><Icon name="calendar-03" /><span>{copy.weeklySchedule}</span></p>
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-x-8 gap-y-2 text-[0.8rem] text-muted">
+            <p className="flex items-center gap-[0.65rem] font-bold text-text [&>svg]:text-accent"><Icon name="calendar-03" /><span>{copy.weeklySchedule}</span></p>
           </div>
-          <ul className="schedule-list" role="list" aria-label={copy.weeklyClasses}>
+          <ul className="grid gap-3" role="list" aria-label={copy.weeklyClasses}>
             {visibleClasses.map((session) => (
               <ClassCard
                 key={session.id}
@@ -54,24 +54,24 @@ export default function Main({ language }) {
           </ul>
         </div>
       </section>
-      <section className="section trainers-section" id="trainers" aria-labelledby="trainers-title">
-        <div className="container">
-          <div className="section-heading">
+      <section className="relative bg-surface py-12 before:pointer-events-none before:absolute before:top-0 before:left-1/2 before:w-[100cqw] before:-translate-x-1/2 before:border-t before:border-border md:py-16 lg:py-20" id="trainers" aria-labelledby="trainers-title">
+        <div className="mx-auto w-full max-w-[1248px] px-5 md:px-6">
+          <div className="mb-8 max-w-[780px]">
             <h2 id="trainers-title">{copy.trainersTitle}</h2>
-            <p>{copy.trainersDescription}</p>
+            <p className="mt-3 max-w-[52ch] text-muted">{copy.trainersDescription}</p>
           </div>
-          <div className="card-grid trainer-grid">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-6 @max-[36rem]:grid-cols-1">
             {trainers.map((trainer) => <TrainerCard key={trainer.id} trainer={trainer} language={language} />)}
           </div>
         </div>
       </section>
-      <section className="section membership-section" id="membership" aria-labelledby="membership-title">
-        <div className="container">
-          <div className="section-heading">
+      <section className="relative py-12 before:pointer-events-none before:absolute before:top-0 before:left-1/2 before:w-[100cqw] before:-translate-x-1/2 before:border-t before:border-border md:py-16 lg:py-20" id="membership" aria-labelledby="membership-title">
+        <div className="mx-auto w-full max-w-[1248px] px-5 md:px-6">
+          <div className="mb-8 max-w-[780px]">
             <h2 id="membership-title">{copy.membershipTitle}</h2>
-            <p>{copy.membershipDescription}</p>
+            <p className="mt-3 max-w-[52ch] text-muted">{copy.membershipDescription}</p>
           </div>
-          <div className="card-grid pricing-grid">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-6 @max-[36rem]:grid-cols-1">
             {memberships.map((plan) => <MembershipCard key={plan.id} plan={plan} language={language} />)}
           </div>
         </div>

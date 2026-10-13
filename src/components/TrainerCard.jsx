@@ -1,17 +1,16 @@
 import { ui } from '../data/studio';
-import Icon from './Icon';
+import ArrowIcon from './ArrowIcon';
 
 export default function TrainerCard({ trainer, language }) {
   return (
-    <article className="trainer-card" aria-labelledby={`${trainer.id}-name`}>
-      <img src={trainer.image} alt={trainer.imageAlt[language]} width="1024" height="1536" loading="lazy" />
-      <div className="trainer-content">
-        <p className="trainer-specialty">{trainer.specialty[language]}</p>
-        <h3 id={`${trainer.id}-name`}>{trainer.name[language]}</h3>
-        <p>{trainer.description[language]}</p>
-        <a className="text-link" href="#schedule">
-          {ui[language].findClass}
-          <span className="icon icon-diagonal" aria-hidden="true"><Icon name={language === 'ar' ? 'arrow-up-left-01' : 'arrow-up-right-01'} /></span>
+    <article className="flex flex-col rounded-3xl border border-border bg-background" aria-labelledby={`${trainer.id}-name`}>
+      <img className="aspect-[4/3] w-full rounded-t-[23px] object-cover object-top" src={trainer.image} alt={trainer.imageAlt[language]} width="1024" height="1536" loading="lazy" />
+      <div className="flex flex-1 flex-col items-start p-6">
+        <p className="mb-2 text-xs text-muted">{trainer.specialty[language]}</p>
+        <h3 className="text-[1.6rem]" id={`${trainer.id}-name`}>{trainer.name[language]}</h3>
+        <p className="mt-[0.85rem] mb-4 text-[0.9rem] text-muted">{trainer.description[language]}</p>
+        <a className="group mt-auto inline-flex min-h-11 items-center gap-4 rounded-full px-3 py-2 text-[0.9rem] font-bold hover:bg-accent hover:text-background focus-visible:bg-accent focus-visible:text-background motion-safe:transition-colors motion-safe:duration-250" href="#schedule">
+          {ui[language].findClass}<ArrowIcon language={language} />
         </a>
       </div>
     </article>

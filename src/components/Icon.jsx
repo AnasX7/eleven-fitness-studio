@@ -73,7 +73,7 @@ const icons = {
   </>),
 };
 
-export default function Icon({ name, className = "icon" }) {
+export default function Icon({ name, className = "size-5 shrink-0" }) {
   return (
     <svg className={className} aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none">
       {icons[name]}
