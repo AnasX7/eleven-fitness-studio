@@ -1,7 +1,8 @@
 import { ui } from '../data/studio';
 import Icon from './Icon';
+import SaveToggle from './SaveToggle';
 
-export default function ClassCard({ session, trainer, language }) {
+export default function ClassCard({ session, trainer, language, saved, onSavedChange }) {
   return (
     <li className="class-row" data-class-id={session.id}>
       <div className="class-time">
@@ -24,6 +25,7 @@ export default function ClassCard({ session, trainer, language }) {
           <img className="coach-avatar" src={trainer.image} alt="" aria-hidden="true" width="32" height="32" loading="lazy" />
           <span>{ui[language].withCoach} {trainer.name[language]}</span>
         </p>
+        <SaveToggle value={saved} onChange={onSavedChange} label={`${session.title[language]} · ${session.day[language]}`} language={language} />
       </div>
     </li>
   );

@@ -9,6 +9,8 @@ import Icon from './Icon';
 export default function Main({ language }) {
   const copy = ui[language];
   const [category, setCategory] = useState('all');
+  // shortcut: selections last for this page visit; add persistence if saved classes become a product feature.
+  const [savedById, setSavedById] = useState({});
   const visibleClasses = category === 'all'
     ? classes
     : classes.filter((session) => session.category === category);
@@ -40,7 +42,14 @@ export default function Main({ language }) {
           </div>
           <ul className="schedule-list" role="list" aria-label={copy.weeklyClasses}>
             {visibleClasses.map((session) => (
-              <ClassCard key={session.id} session={session} trainer={trainers.find((trainer) => trainer.id === session.trainerId)} language={language} />
+              <ClassCard
+                key={session.id}
+                session={session}
+                trainer={trainers.find((trainer) => trainer.id === session.trainerId)}
+                language={language}
+                saved={savedById[session.id] ?? false}
+                onSavedChange={(value) => setSavedById((previous) => ({ ...previous, [session.id]: value }))}
+              />
             ))}
           </ul>
         </div>
