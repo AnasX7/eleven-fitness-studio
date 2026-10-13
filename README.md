@@ -4,11 +4,12 @@ Week 2 continues the original studio website with Vite, React (JavaScript) and T
 
 ## Run locally
 
-Use Node.js 20.19+ or 22.12+.
+Use Node.js 20.19+ (20.x), 22.13+ (22.x), or 24+ for Vite and ESLint.
 
 ```sh
 npm install
 npm run dev
+npm run lint
 npm run check:data
 npm run build
 npm run preview
@@ -21,6 +22,7 @@ Open `/index.html` for English or `/ar.html` for Arabic. Vite builds both HTML e
 ```text
 index.html, ar.html        Language-specific HTML entry shells
 vite.config.js            React, Tailwind and both build inputs
+eslint.config.js          JavaScript, React Hooks and Fast Refresh lint rules
 src/
   main.jsx                React mount and initial locale
   App.jsx                 Header, Main and Footer composition
@@ -51,7 +53,9 @@ This implementation uses the instructor example to understand React patterns, wh
 
 ## Validation
 
-`npm run check:data` checks unique IDs, trainer references, supported filter categories, image paths, original prices and complete English/Arabic translations. `npm run build` produces both language entries; check them through `npm run preview` as well as the dev server. There is no lint script or additional testing dependency.
+`npm run lint` checks JavaScript and JSX, React Hooks usage and Fast Refresh exports, failing on any warnings. Browser code uses browser globals; configuration files and scripts use Node globals. Generated build output is ignored. ESLint is development tooling; no runtime or testing library was added.
+
+`npm run check:data` checks unique IDs, trainer references, supported filter categories, image paths, original prices and complete English/Arabic translations. `npm run build` produces both language entries; check them through `npm run preview` as well as the dev server.
 
 Check both languages at **375px, 768px and 1440px**:
 
