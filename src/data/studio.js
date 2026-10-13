@@ -359,7 +359,7 @@ export const navigation = [
   }
 ];
 
-export const ui = {
+export const translations = {
   "en": {
     "brand": "ELEVEN",
     "brandCaption": "FITNESS STUDIO",

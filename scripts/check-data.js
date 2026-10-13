@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
-import { categories, classes, trainers, memberships, navigation, ui } from '../src/data/studio.js';
+import { categories, classes, trainers, memberships, navigation, translations } from '../src/data/studio.js';
 
 for (const items of [categories, classes, trainers, memberships, navigation]) {
   assert.equal(new Set(items.map((item) => item.id)).size, items.length, 'IDs must be unique');
@@ -18,15 +18,15 @@ for (const trainer of trainers) {
 for (const plan of memberships) {
   assert.equal(new Set(plan.features.map((feature) => feature.id)).size, plan.features.length);
 }
-assert.deepEqual(Object.keys(ui.en).sort(), Object.keys(ui.ar).sort());
-for (const language of ['en', 'ar']) {
+assert.deepEqual(Object.keys(translations.en).sort(), Object.keys(translations.ar).sort());
+for (const locale of ['en', 'ar']) {
   const text = [
-    ...Object.values(ui[language]),
-    ...classes.flatMap((item) => ['day', 'time', 'title', 'description', 'details'].map((key) => item[key][language])),
-    ...trainers.flatMap((item) => ['name', 'specialty', 'description', 'imageAlt'].map((key) => item[key][language])),
-    ...memberships.flatMap((plan) => [plan.name[language], plan.description[language], ...plan.features.map((feature) => feature.text[language])]),
-    ...navigation.map((link) => link.label[language]),
-    ...categories.map((category) => category.label[language]),
+    ...Object.values(translations[locale]),
+    ...classes.flatMap((item) => ['day', 'time', 'title', 'description', 'details'].map((key) => item[key][locale])),
+    ...trainers.flatMap((item) => ['name', 'specialty', 'description', 'imageAlt'].map((key) => item[key][locale])),
+    ...memberships.flatMap((plan) => [plan.name[locale], plan.description[locale], ...plan.features.map((feature) => feature.text[locale])]),
+    ...navigation.map((link) => link.label[locale]),
+    ...categories.map((category) => category.label[locale]),
   ];
   assert.ok(text.every((value) => typeof value === 'string' && value.trim()), 'Both translations must be complete');
 }

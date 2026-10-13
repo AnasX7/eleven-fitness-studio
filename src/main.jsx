@@ -1,12 +1,15 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
+import { LocaleContext } from './context/LocaleContext';
 import './index.css';
 
-const language = document.documentElement.lang === 'ar' ? 'ar' : 'en';
+const locale = document.documentElement.lang === 'ar' ? 'ar' : 'en';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App language={language} />
+    <LocaleContext value={locale}>
+      <App />
+    </LocaleContext>
   </StrictMode>,
 );

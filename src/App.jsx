@@ -2,12 +2,12 @@ import Header from './components/Header';
 import Main from './components/Main';
 import Footer from './components/Footer';
 
-export default function App({ language }) {
+export default function App() {
   return (
     <>
-      <Header language={language} />
-      <Main language={language} />
-      <Footer language={language} />
+      <Header />
+      <Main />
+      <Footer />
     </>
   );
 }
