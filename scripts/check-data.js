@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
-import { classes, trainers, memberships, navigation, ui } from '../src/data/studio.js';
+import { categories, classes, trainers, memberships, navigation, ui } from '../src/data/studio.js';
 
-for (const items of [classes, trainers, memberships, navigation]) {
+for (const items of [categories, classes, trainers, memberships, navigation]) {
   assert.equal(new Set(items.map((item) => item.id)).size, items.length, 'IDs must be unique');
 }
 assert.equal(classes.length, 5);
@@ -10,6 +10,7 @@ assert.equal(trainers.length, 3);
 assert.deepEqual(memberships.map((plan) => plan.price), [199, 349, 499]);
 for (const session of classes) {
   assert.ok(trainers.some((trainer) => trainer.id === session.trainerId), 'Class needs a trainer');
+  assert.ok(categories.some((category) => category.id !== 'all' && category.id === session.category), 'Class needs a filter category');
 }
 for (const trainer of trainers) {
   assert.ok(existsSync(new URL(`../public${trainer.image}`, import.meta.url)), 'Image must exist');
@@ -25,6 +26,7 @@ for (const language of ['en', 'ar']) {
     ...trainers.flatMap((item) => ['name', 'specialty', 'description', 'imageAlt'].map((key) => item[key][language])),
     ...memberships.flatMap((plan) => [plan.name[language], plan.description[language], ...plan.features.map((feature) => feature.text[language])]),
     ...navigation.map((link) => link.label[language]),
+    ...categories.map((category) => category.label[language]),
   ];
   assert.ok(text.every((value) => typeof value === 'string' && value.trim()), 'Both translations must be complete');
 }

@@ -2,3 +2,11 @@
 /* Keep the existing reset until the Tailwind migration is complete. */
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
+
+@theme {
+  --color-background: #111310;
+  --color-text: #f7f8f2;
+  --color-accent: #d0f468;
+  --color-border: #464c40;
+  --font-sans: "Thmanyah Sans", Arial, sans-serif;
+}

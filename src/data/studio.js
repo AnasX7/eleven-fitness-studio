@@ -1,3 +1,11 @@
+export const categories = [
+  { id: 'all', label: { en: 'All', ar: 'الكل' } },
+  { id: 'strength', label: { en: 'Strength', ar: 'قوة' } },
+  { id: 'conditioning', label: { en: 'Conditioning', ar: 'لياقة' } },
+  { id: 'mobility', label: { en: 'Mobility', ar: 'مرونة' } },
+  { id: 'mixed', label: { en: 'Mixed training', ar: 'تمارين متنوعة' } },
+];
+
 export const classes = [
   {
     "id": "mon-strength",
@@ -368,6 +376,7 @@ export const ui = {
     "meetTrainers": "Meet the trainers",
     "weeklySchedule": "Weekly schedule",
     "weeklyClasses": "Weekly classes",
+    "filterLabel": "Filter classes by category",
     "footerDescription": "Strength, conditioning and mobility. Coaching for every level, progress at your pace.",
     "explore": "Explore ELEVEN",
     "approach": "Our approach",
@@ -401,6 +410,7 @@ export const ui = {
     "meetTrainers": "تعرّف على المدربين",
     "weeklySchedule": "الجدول الأسبوعي",
     "weeklyClasses": "الحصص الأسبوعية",
+    "filterLabel": "تصفية الحصص حسب النوع",
     "footerDescription": "قوة، لياقة وحركة. تدريب يناسب مستواك وتقدّم على إيقاعك.",
     "explore": "اكتشف إليفن",
     "approach": "طريقتنا",

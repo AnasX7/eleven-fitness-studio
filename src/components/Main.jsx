@@ -1,4 +1,5 @@
-import { classes, trainers, memberships, ui } from '../data/studio';
+import { useState } from 'react';
+import { categories, classes, trainers, memberships, ui } from '../data/studio';
 import Hero from './Hero';
 import ClassCard from './ClassCard';
 import TrainerCard from './TrainerCard';
@@ -7,6 +8,10 @@ import Icon from './Icon';
 
 export default function Main({ language }) {
   const copy = ui[language];
+  const [category, setCategory] = useState('all');
+  const visibleClasses = category === 'all'
+    ? classes
+    : classes.filter((session) => session.category === category);
   return (
     <main className="main-frame">
       <Hero language={language} />
@@ -16,11 +21,25 @@ export default function Main({ language }) {
             <h2 id="schedule-title">{copy.scheduleTitle}</h2>
             <p>{copy.scheduleDescription}</p>
           </div>
+          <div className="mb-4 flex flex-wrap gap-2" role="group" aria-label={copy.filterLabel}>
+            {categories.map((option) => (
+              <button
+                key={option.id}
+                type="button"
+                data-category={option.id}
+                aria-pressed={category === option.id}
+                onClick={() => setCategory(option.id)}
+                className={`min-h-11 cursor-pointer rounded-full border border-solid px-4 py-2 font-sans text-sm font-bold leading-[1.7] motion-safe:transition-colors ${category === option.id ? 'border-accent bg-accent text-background' : 'border-border bg-transparent text-text hover:border-accent hover:text-accent'}`}
+              >
+                {option.label[language]}
+              </button>
+            ))}
+          </div>
           <div className="schedule-intro">
             <p className="schedule-label"><Icon name="calendar-03" /><span>{copy.weeklySchedule}</span></p>
           </div>
           <ul className="schedule-list" role="list" aria-label={copy.weeklyClasses}>
-            {classes.map((session) => (
+            {visibleClasses.map((session) => (
               <ClassCard key={session.id} session={session} trainer={trainers.find((trainer) => trainer.id === session.trainerId)} language={language} />
             ))}
           </ul>
