@@ -2,7 +2,6 @@ import { useTranslations } from '../i18n/useTranslations';
 
 export default function SaveToggle({ value, onChange, label }) {
   const t = useTranslations('SaveToggle');
-  // The parent owns the saved value; clicking requests the opposite value through onChange.
 
   return (
     <button

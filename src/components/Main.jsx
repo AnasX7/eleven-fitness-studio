@@ -14,10 +14,8 @@ export default function Main() {
   const [category, setCategory] = useState('all');
 
   // Keep selections in Main so filtering a card out does not erase its saved value.
-  // shortcut: selections last for this page visit; add persistence if saved classes become a product feature.
   const [savedById, setSavedById] = useState({});
 
-  // Derive the visible list from the selected category without changing the source data.
   const visibleClasses = category === 'all'
     ? classes
     : classes.filter((session) => session.category === category);
@@ -60,7 +58,6 @@ export default function Main() {
             </p>
           </div>
           <ul className="grid gap-3" role="list" aria-label={t('weeklyClasses')}>
-            {/* Session IDs distinguish Monday and Thursday even though their class titles match. */}
             {visibleClasses.map((session) => (
               <ClassCard
                 key={session.id}
@@ -69,7 +66,6 @@ export default function Main() {
                 saved={savedById[session.id] ?? false}
                 onSavedChange={(value) =>
                   setSavedById((previous) => ({
-                    // Copy the latest selections, then update only this session's entry.
                     ...previous,
                     [session.id]: value,
                   }))

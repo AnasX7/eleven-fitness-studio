@@ -12,7 +12,7 @@ export default function Brand() {
       <span
         className="h-8 w-[27px] shrink-0 -skew-x-[16deg] border-x-[9px] border-accent"
         aria-hidden="true"
-       />
+      />
       <span className="min-w-0">
         {t('brand')}
         <span className="mt-0.5 block text-[0.65rem] leading-[1.15] font-bold tracking-[0.18em] rtl:text-xs rtl:tracking-normal">

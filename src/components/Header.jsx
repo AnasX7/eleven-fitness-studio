@@ -9,7 +9,6 @@ export default function Header() {
   const t = useTranslations('Header');
   const locale = useContext(LocaleContext);
 
-  // The switch link describes its destination language, which is opposite to this page.
   const targetLocale = locale === 'ar' ? 'en' : 'ar';
 
   return (

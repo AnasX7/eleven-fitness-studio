@@ -63,7 +63,6 @@ export default function ClassCard({ session, trainer, saved, onSavedChange }) {
             {t('withCoach')} {trainer.name[locale]}
           </span>
         </p>
-        {/* Forward the parent's value and callback without creating another saved state here. */}
         <SaveToggle
           value={saved}
           onChange={onSavedChange}

@@ -22,7 +22,7 @@ export default function Hero() {
       <div
         className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgb(17_19_16/92%),rgb(17_19_16/65%))] md:bg-[linear-gradient(90deg,rgb(17_19_16/97%)_0%,rgb(17_19_16/85%)_35%,rgb(17_19_16/18%)_75%)] rtl:bg-[linear-gradient(270deg,rgb(17_19_16/92%),rgb(17_19_16/65%))] md:rtl:bg-[linear-gradient(270deg,rgb(17_19_16/97%)_0%,rgb(17_19_16/85%)_35%,rgb(17_19_16/18%)_75%)]"
         aria-hidden="true"
-       />
+      />
       <div className="mx-auto w-full max-w-[1248px] px-5 py-8 md:px-6 md:py-16">
         <h1
           className="max-w-[12ch] text-[clamp(2.4rem,9.5vw,3.6rem)] wrap-anywhere md:text-[clamp(3.5rem,6vw,5.25rem)]"
