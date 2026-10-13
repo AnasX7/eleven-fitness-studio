@@ -4,6 +4,7 @@ import Icon from './Icon';
 
 export default function ArrowIcon() {
   const locale = useContext(LocaleContext);
+
   return (
     <Icon
       name={locale === 'ar' ? 'arrow-up-left-01' : 'arrow-up-right-01'}

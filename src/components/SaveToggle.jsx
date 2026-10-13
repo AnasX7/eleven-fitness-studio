@@ -3,8 +3,10 @@ import { LocaleContext } from '../context/LocaleContext';
 import { translations } from '../data/studio';
 
 export default function SaveToggle({ value, onChange, label }) {
+  // The parent owns the saved value; clicking requests the opposite value through onChange.
   const locale = useContext(LocaleContext);
   const messages = translations[locale];
+
   return (
     <button
       type="button"
