@@ -1,12 +1,13 @@
 import { useContext } from 'react';
 import { LocaleContext } from '../context/LocaleContext';
-import { translations } from '../data/studio';
+import { useTranslations } from '../i18n/useTranslations';
 import Icon from './Icon';
 import ArrowIcon from './ArrowIcon';
 
 export default function MembershipCard({ plan }) {
+  const t = useTranslations('MembershipCard');
+  const tCommon = useTranslations('Common');
   const locale = useContext(LocaleContext);
-  const messages = translations[locale];
 
   return (
     <article
@@ -15,7 +16,7 @@ export default function MembershipCard({ plan }) {
     >
       {plan.featured && (
         <p className="absolute -top-4 start-6 rounded-full bg-accent px-3 py-1 text-xs font-bold text-background">
-          {messages.planLabel}
+          {t('planLabel')}
         </p>
       )}
       <div className="flex flex-wrap items-center gap-3">
@@ -34,11 +35,11 @@ export default function MembershipCard({ plan }) {
       </p>
       <p className="mt-1 flex flex-wrap items-baseline gap-x-[0.375rem] gap-y-1 border-b border-border pb-5 text-[clamp(2.25rem,4vw,3rem)] leading-[1.2] font-bold">
         <span className="text-[0.85rem]">
-          {messages.currency}
+          {tCommon('currency')}
         </span>
         <bdi>{plan.price.toLocaleString(locale === 'ar' ? 'ar-u-nu-arab' : 'en')}</bdi>
         <span className="text-[0.85rem] font-normal text-muted">
-          {messages.pricePeriod}
+          {tCommon('pricePeriod')}
         </span>
       </p>
       <ul role="list" className="mb-4 grid gap-3 text-[0.85rem]" id={`${plan.id}-details`} tabIndex={-1}>
@@ -52,9 +53,9 @@ export default function MembershipCard({ plan }) {
       <a
         className={`group mt-auto flex min-h-[52px] items-center justify-between gap-3 rounded-full border px-3 py-[0.8rem] text-[0.9rem] font-bold hover:border-accent-hover hover:bg-accent-hover hover:text-background focus-visible:border-accent-hover focus-visible:bg-accent-hover focus-visible:text-background motion-safe:transition-[background-color,color,border-color,transform] motion-safe:duration-250 motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-px ${plan.featured ? 'border-accent bg-accent text-background' : 'border-border bg-transparent text-text'}`}
         href={`#${plan.id}-details`}
-        aria-label={`${messages.aboutPlan}: ${plan.name[locale]}`}
+        aria-label={`${tCommon('aboutPlan')}: ${plan.name[locale]}`}
       >
-        {messages.aboutPlan}
+        {tCommon('aboutPlan')}
         <ArrowIcon />
       </a>
     </article>

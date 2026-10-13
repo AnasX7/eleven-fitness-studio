@@ -28,7 +28,11 @@ src/
   App.jsx                 Header, Main and Footer composition
   index.css               Tailwind import, theme, local fonts and base rules
   context/LocaleContext.js App-wide locale context
-  data/studio.js          Classes, trainers, memberships, navigation, categories and translations
+  data/studio.js            Classes, trainers, memberships, navigation and categories
+  messages/en.json          English interface messages, grouped by namespace
+  messages/ar.json          Arabic interface messages, grouped by namespace
+  messages/index.js         Exports the message dictionaries by locale
+  i18n/useTranslations.js   Local hook for namespaced static-string lookup
   components/
     Header.jsx, Hero.jsx, Main.jsx, Footer.jsx
     ClassCard.jsx, TrainerCard.jsx, MembershipCard.jsx
@@ -46,8 +50,10 @@ public/assets/             Original local images, fonts, icons and license
 - `Main` also owns `savedById`, an object keyed by session ID. A functional state update copies the previous object and changes one session's value.
 - `ClassCard` receives its saved value and change callback. It passes them to `SaveToggle` as `value` and `onChange`, following the controlled QuantityStepper pattern. The toggle has no internal state; it calls `onChange(!value)`.
 - Saved values remain in `Main` when filtering unmounts a class card, so returning to All restores its selection. Another class's selection stays independent.
-- Both languages use the same session IDs and category values. UI text is exported as `translations`; `messages` is the selected locale’s dictionary. `LocaleContext` makes the locale available throughout the app, and `useContext` reads it. RTL utilities and logical spacing preserve the Arabic layout.
+- Both languages use the same session IDs and category values. UI messages live in English and Arabic JSON dictionaries, grouped by component namespace with shared labels in `Common`. `LocaleContext` provides the current locale. Components call the local `useTranslations(namespace)` hook to obtain `t`, then render a string with `t(key)`. RTL utilities and logical spacing preserve the Arabic layout.
 - Unprefixed Tailwind classes describe the phone layout. `md:` and `lg:` adapt the existing tablet and desktop layout. Motion is enabled only with `motion-safe:`.
+
+The local translation hook follows next-intl’s namespace and `useTranslations`/`t` naming. It supports static strings only; it does not implement interpolation, pluralization or formatting, and next-intl is not installed. Studio content arrays stay together in one JavaScript data file.
 
 This implementation uses the instructor example to understand React patterns, while retaining this repository's own design, assets and content.
 
@@ -55,7 +61,7 @@ This implementation uses the instructor example to understand React patterns, wh
 
 `npm run lint` checks JavaScript and JSX, React Hooks usage and Fast Refresh exports, failing on any warnings. Browser code uses browser globals; configuration files and scripts use Node globals. Generated build output is ignored. ESLint is development tooling; no runtime or testing library was added.
 
-`npm run check:data` checks unique IDs, trainer references, supported filter categories, image paths, original prices and complete English/Arabic translations. `npm run build` produces both language entries; check them through `npm run preview` as well as the dev server.
+`npm run check:data` checks unique IDs, trainer references, supported filter categories, image paths, original prices and complete English/Arabic content plus matching message namespaces and keys. `npm run build` produces both language entries; check them through `npm run preview` as well as the dev server.
 
 Check both languages at **375px, 768px and 1440px**:
 

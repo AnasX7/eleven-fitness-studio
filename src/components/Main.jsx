@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import { LocaleContext } from '../context/LocaleContext';
-import { categories, classes, trainers, memberships, translations } from '../data/studio';
+import { useTranslations } from '../i18n/useTranslations';
+import { categories, classes, trainers, memberships } from '../data/studio';
 import Hero from './Hero';
 import ClassCard from './ClassCard';
 import TrainerCard from './TrainerCard';
@@ -8,8 +9,8 @@ import MembershipCard from './MembershipCard';
 import Icon from './Icon';
 
 export default function Main() {
+  const t = useTranslations('Main');
   const locale = useContext(LocaleContext);
-  const messages = translations[locale];
   const [category, setCategory] = useState('all');
 
   // Keep selections in Main so filtering a card out does not erase its saved value.
@@ -32,13 +33,13 @@ export default function Main() {
         <div className="mx-auto w-full max-w-[1248px] px-5 md:px-6">
           <div className="mb-8 max-w-[780px]">
             <h2 id="schedule-title">
-              {messages.scheduleTitle}
+              {t('scheduleTitle')}
             </h2>
             <p className="mt-3 max-w-[52ch] text-muted">
-              {messages.scheduleDescription}
+              {t('scheduleDescription')}
             </p>
           </div>
-          <div className="mb-4 flex flex-wrap gap-2" role="group" aria-label={messages.filterLabel}>
+          <div className="mb-4 flex flex-wrap gap-2" role="group" aria-label={t('filterLabel')}>
             {categories.map((option) => (
               <button
                 key={option.id}
@@ -55,10 +56,10 @@ export default function Main() {
           <div className="mb-4 flex flex-wrap items-center justify-between gap-x-8 gap-y-2 text-[0.8rem] text-muted">
             <p className="flex items-center gap-[0.65rem] font-bold text-text [&>svg]:text-accent">
               <Icon name="calendar-03" />
-              <span>{messages.weeklySchedule}</span>
+              <span>{t('weeklySchedule')}</span>
             </p>
           </div>
-          <ul className="grid gap-3" role="list" aria-label={messages.weeklyClasses}>
+          <ul className="grid gap-3" role="list" aria-label={t('weeklyClasses')}>
             {/* Session IDs distinguish Monday and Thursday even though their class titles match. */}
             {visibleClasses.map((session) => (
               <ClassCard
@@ -86,10 +87,10 @@ export default function Main() {
         <div className="mx-auto w-full max-w-[1248px] px-5 md:px-6">
           <div className="mb-8 max-w-[780px]">
             <h2 id="trainers-title">
-              {messages.trainersTitle}
+              {t('trainersTitle')}
             </h2>
             <p className="mt-3 max-w-[52ch] text-muted">
-              {messages.trainersDescription}
+              {t('trainersDescription')}
             </p>
           </div>
           <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-6 @max-[36rem]:grid-cols-1">
@@ -107,10 +108,10 @@ export default function Main() {
         <div className="mx-auto w-full max-w-[1248px] px-5 md:px-6">
           <div className="mb-8 max-w-[780px]">
             <h2 id="membership-title">
-              {messages.membershipTitle}
+              {t('membershipTitle')}
             </h2>
             <p className="mt-3 max-w-[52ch] text-muted">
-              {messages.membershipDescription}
+              {t('membershipDescription')}
             </p>
           </div>
           <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-6 @max-[36rem]:grid-cols-1">

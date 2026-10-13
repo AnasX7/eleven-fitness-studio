@@ -1,9 +1,10 @@
 import { useContext } from 'react';
 import { LocaleContext } from '../context/LocaleContext';
-import { translations } from '../data/studio';
+import { useTranslations } from '../i18n/useTranslations';
 import ArrowIcon from './ArrowIcon';
 
 export default function TrainerCard({ trainer }) {
+  const t = useTranslations('Common');
   const locale = useContext(LocaleContext);
 
   return (
@@ -33,7 +34,7 @@ export default function TrainerCard({ trainer }) {
           className="group mt-auto inline-flex min-h-11 items-center gap-4 rounded-full px-3 py-2 text-[0.9rem] font-bold hover:bg-accent hover:text-background focus-visible:bg-accent focus-visible:text-background motion-safe:transition-colors motion-safe:duration-250"
           href="#schedule"
         >
-          {translations[locale].findClass}
+          {t('findClass')}
           <ArrowIcon />
         </a>
       </div>

@@ -1,0 +1,50 @@
+{
+  "Common": {
+    "brand": "إليفن",
+    "brandCaption": "استوديو اللياقة",
+    "homeLabel": "إليفن استوديو اللياقة، الصفحة الرئيسية",
+    "findClass": "اختر حصتك",
+    "currency": "درهم",
+    "pricePeriod": "/ شهريًا",
+    "aboutPlan": "عن هذه العضوية",
+    "withCoach": "مع"
+  },
+  "Header": {
+    "navigationLabel": "التنقل الرئيسي",
+    "menuLabel": "قائمة التنقل",
+    "languageLabel": "English",
+    "languageAriaLabel": "View the site in English"
+  },
+  "Hero": {
+    "title": "ابدأ اليوم.",
+    "accent": "كن أقوى.",
+    "description": "تدريب مدروس، وتشجيع مستمر. خطوة صغيرة في كل حصة نحو نسخة أقوى منك.",
+    "imageAlt": "رياضية تتدرب بحبال المقاومة في صالة رياضية",
+    "meetTrainers": "تعرّف على المدربين"
+  },
+  "Main": {
+    "scheduleTitle": "جدول الحصص",
+    "scheduleDescription": "قوة، لياقة واستشفاء. اختر حصتك القادمة.",
+    "trainersTitle": "نبذة عن المدربين",
+    "trainersDescription": "تدريب باهتمام، ودعم في كل خطوة.",
+    "membershipTitle": "باقات العضوية",
+    "membershipDescription": "اختر العضوية التي تناسب روتينك.",
+    "weeklySchedule": "الجدول الأسبوعي",
+    "weeklyClasses": "الحصص الأسبوعية",
+    "filterLabel": "تصفية الحصص حسب النوع"
+  },
+  "Footer": {
+    "description": "قوة، لياقة وحركة. تدريب يناسب مستواك وتقدّم على إيقاعك.",
+    "explore": "اكتشف إليفن",
+    "approach": "طريقتنا",
+    "approachDescription": "تدريب باهتمام. حركة باستمرار. تقدّم يناسبك.",
+    "copyright": "© ٢٠٢٦ إليفن. جميع الحقوق محفوظة."
+  },
+  "MembershipCard": {
+    "planLabel": "لروتين منتظم"
+  },
+  "SaveToggle": {
+    "save": "احفظ الحصة",
+    "saved": "تم الحفظ"
+  }
+}

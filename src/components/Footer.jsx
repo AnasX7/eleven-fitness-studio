@@ -1,11 +1,13 @@
 import { useContext } from 'react';
 import { LocaleContext } from '../context/LocaleContext';
-import { navigation, translations } from '../data/studio';
+import { useTranslations } from '../i18n/useTranslations';
+import { navigation } from '../data/studio';
 import Brand from './Brand';
 
 export default function Footer() {
+  const t = useTranslations('Footer');
+  const tCommon = useTranslations('Common');
   const locale = useContext(LocaleContext);
-  const messages = translations[locale];
 
   return (
     <footer className="overflow-clip border-t border-border bg-surface">
@@ -14,7 +16,7 @@ export default function Footer() {
           <div className="min-w-0">
             <Brand />
             <p className="mt-3 text-[0.9rem] text-muted md:mt-4 md:max-w-[34ch]">
-              {messages.footerDescription}
+              {t('description')}
             </p>
           </div>
           <nav className="min-w-0" aria-labelledby="footer-links-title">
@@ -22,7 +24,7 @@ export default function Footer() {
               className="mb-2 text-xs leading-[1.7] tracking-[0.08em] uppercase md:mb-3 rtl:tracking-normal"
               id="footer-links-title"
             >
-              {messages.explore}
+              {t('explore')}
             </h3>
             <ul className="flex flex-wrap gap-1 md:flex-col md:items-start" role="list">
               {navigation.map((link) => (
@@ -39,10 +41,10 @@ export default function Footer() {
           </nav>
           <div className="min-w-0">
             <h3 className="mb-2 text-xs leading-[1.7] tracking-[0.08em] uppercase md:mb-3 rtl:tracking-normal">
-              {messages.approach}
+              {t('approach')}
             </h3>
             <p className="text-[0.9rem] text-muted md:max-w-[34ch]">
-              {messages.approachDescription}
+              {t('approachDescription')}
             </p>
           </div>
         </div>
@@ -51,10 +53,10 @@ export default function Footer() {
             className="text-[min(18cqw,12rem)] leading-[0.8] font-black tracking-[-0.06em] rtl:leading-[1.3] rtl:tracking-normal"
             aria-hidden="true"
           >
-            {messages.brand}
+            {tCommon('brand')}
           </p>
           <p className="self-start text-start text-xs text-muted md:ms-auto md:self-auto md:text-end md:rtl:self-end">
-            {messages.copyright}
+            {t('copyright')}
           </p>
         </div>
       </div>

@@ -1,10 +1,11 @@
 import { useContext } from 'react';
 import { LocaleContext } from '../context/LocaleContext';
-import { translations } from '../data/studio';
+import { useTranslations } from '../i18n/useTranslations';
 import Icon from './Icon';
 import SaveToggle from './SaveToggle';
 
 export default function ClassCard({ session, trainer, saved, onSavedChange }) {
+  const t = useTranslations('Common');
   const locale = useContext(LocaleContext);
 
   return (
@@ -59,7 +60,7 @@ export default function ClassCard({ session, trainer, saved, onSavedChange }) {
             loading="lazy"
           />
           <span className="min-w-0">
-            {translations[locale].withCoach} {trainer.name[locale]}
+            {t('withCoach')} {trainer.name[locale]}
           </span>
         </p>
         {/* Forward the parent's value and callback without creating another saved state here. */}

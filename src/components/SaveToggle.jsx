@@ -1,21 +1,18 @@
-import { useContext } from 'react';
-import { LocaleContext } from '../context/LocaleContext';
-import { translations } from '../data/studio';
+import { useTranslations } from '../i18n/useTranslations';
 
 export default function SaveToggle({ value, onChange, label }) {
+  const t = useTranslations('SaveToggle');
   // The parent owns the saved value; clicking requests the opposite value through onChange.
-  const locale = useContext(LocaleContext);
-  const messages = translations[locale];
 
   return (
     <button
       type="button"
       aria-pressed={value}
-      aria-label={`${messages.saveClass}: ${label}`}
+      aria-label={`${t('save')}: ${label}`}
       onClick={() => onChange(!value)}
       className={`min-h-11 cursor-pointer rounded-full border border-solid px-4 py-2 font-sans text-sm font-bold leading-[1.7] motion-safe:transition-colors ${value ? 'border-accent bg-accent text-background' : 'border-border bg-transparent text-text hover:border-accent hover:text-accent'}`}
     >
-      {value ? messages.saved : messages.saveClass}
+      {value ? t('saved') : t('save')}
     </button>
   );
 }
