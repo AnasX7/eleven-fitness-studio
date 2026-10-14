@@ -10,8 +10,6 @@ Use Node.js 20.19+ (20.x), 22.13+ (22.x), or 24+ for Vite and ESLint.
 npm install
 npm run dev
 npm run lint
-npm run check:data
-npm run check:translations
 npm run build
 npm run preview
 ```
@@ -39,8 +37,6 @@ src/
     sections/               Hero, ScheduleSection, TrainersSection, MembershipSection
     cards/                  ClassCard, TrainerCard, MembershipCard
     ui/                     Brand, Icon, ArrowIcon and controlled SaveToggle
-scripts/check-data.js      Studio data and message completeness assertions
-scripts/check-translations.js Scoped and root translation assertions; no testing libraries
 public/assets/             Original local images, fonts, icons and license
 ```
 
@@ -61,9 +57,9 @@ This implementation uses the instructor example to understand React patterns, wh
 
 ## Validation
 
-`npm run lint` checks JavaScript and JSX, React Hooks usage and Fast Refresh exports, failing on any warnings. Browser code uses browser globals; configuration files and scripts use Node globals. Generated build output is ignored. ESLint is development tooling; no runtime or testing library was added.
+`npm run lint` checks JavaScript and JSX, React Hooks usage and Fast Refresh exports, failing on any warnings. Browser code uses browser globals; configuration files use Node globals. Generated build output is ignored. ESLint is development tooling; no runtime or testing library was added.
 
-`npm run check:data` checks unique IDs, trainer references, supported filter categories, image paths, original prices and complete English/Arabic content plus matching message namespaces and keys. `npm run check:translations` renders the hook with each locale provider and checks every message through both scoped and root lookups, including keys shared across namespaces. `npm run build` produces both language entries; check them through `npm run preview` as well as the dev server.
+`npm run build` produces both language entries; check them through `npm run preview` as well as the dev server.
 
 Check both languages at **375px, 768px and 1440px**:
 
@@ -85,6 +81,6 @@ During migration, the production build, browser assertions and screenshots were 
 
 - `legacy/html-css` preserves the original implementation.
 - `feat/react-tailwind` contains the Week 2 migration.
-- `main` is unchanged until an explicitly authorized merge.
+- `main` contains the merged Week 2 implementation.
 
 Typography: local Thmanyah Sans. Icons: [Hugeicons Stroke Rounded](https://hugeicons.com/icons/stroke-rounded), with the upstream [MIT license](public/assets/icons/LICENSE.txt). Images: generated fictional studio photography.

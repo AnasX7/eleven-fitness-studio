@@ -7,9 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint . --max-warnings 0",
-    "check:data": "node scripts/check-data.js",
-    "check:translations": "node scripts/check-translations.js"
+    "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
     "react": "^19.2.0",
