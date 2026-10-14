@@ -22,16 +22,20 @@
     "imageAlt": "رياضية تتدرب بحبال المقاومة في صالة رياضية",
     "meetTrainers": "تعرّف على المدربين"
   },
-  "Main": {
-    "scheduleTitle": "جدول الحصص",
-    "scheduleDescription": "قوة، لياقة واستشفاء. اختر حصتك القادمة.",
-    "trainersTitle": "نبذة عن المدربين",
-    "trainersDescription": "تدريب باهتمام، ودعم في كل خطوة.",
-    "membershipTitle": "باقات العضوية",
-    "membershipDescription": "اختر العضوية التي تناسب روتينك.",
+  "ScheduleSection": {
+    "title": "جدول الحصص",
+    "description": "قوة، لياقة واستشفاء. اختر حصتك القادمة.",
     "weeklySchedule": "الجدول الأسبوعي",
     "weeklyClasses": "الحصص الأسبوعية",
     "filterLabel": "تصفية الحصص حسب النوع"
+  },
+  "TrainersSection": {
+    "title": "نبذة عن المدربين",
+    "description": "تدريب باهتمام، ودعم في كل خطوة."
+  },
+  "MembershipSection": {
+    "title": "باقات العضوية",
+    "description": "اختر العضوية التي تناسب روتينك."
   },
   "Footer": {
     "description": "قوة، لياقة وحركة. تدريب يناسب مستواك وتقدّم على إيقاعك.",

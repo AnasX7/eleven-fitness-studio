@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import { LocaleContext } from '../context/LocaleContext';
-import { useTranslations } from '../i18n/useTranslations';
-import Icon from './Icon';
-import SaveToggle from './SaveToggle';
+import { LocaleContext } from '../../context/LocaleContext';
+import { useTranslations } from '../../i18n/useTranslations';
+import Icon from '../ui/Icon';
+import SaveToggle from '../ui/SaveToggle';
 
 export default function ClassCard({ session, trainer, saved, onSavedChange }) {
   const t = useTranslations('Common');

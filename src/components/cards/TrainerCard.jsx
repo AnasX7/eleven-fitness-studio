@@ -1,7 +1,7 @@
 import { useContext } from 'react';
-import { LocaleContext } from '../context/LocaleContext';
-import { useTranslations } from '../i18n/useTranslations';
-import ArrowIcon from './ArrowIcon';
+import { LocaleContext } from '../../context/LocaleContext';
+import { useTranslations } from '../../i18n/useTranslations';
+import ArrowIcon from '../ui/ArrowIcon';
 
 export default function TrainerCard({ trainer }) {
   const t = useTranslations('Common');

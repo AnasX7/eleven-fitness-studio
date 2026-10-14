@@ -1,9 +1,9 @@
 import { useContext } from 'react';
-import { LocaleContext } from '../context/LocaleContext';
-import { useTranslations } from '../i18n/useTranslations';
-import { navigation } from '../data/studio';
-import Brand from './Brand';
-import Icon from './Icon';
+import { LocaleContext } from '../../context/LocaleContext';
+import { useTranslations } from '../../i18n/useTranslations';
+import { navigation } from '../../data/studio';
+import Brand from '../ui/Brand';
+import Icon from '../ui/Icon';
 
 export default function Header() {
   const t = useTranslations('Header');

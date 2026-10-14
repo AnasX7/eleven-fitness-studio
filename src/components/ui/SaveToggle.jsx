@@ -1,4 +1,4 @@
-import { useTranslations } from '../i18n/useTranslations';
+import { useTranslations } from '../../i18n/useTranslations';
 
 export default function SaveToggle({ value, onChange, label }) {
   const t = useTranslations('SaveToggle');

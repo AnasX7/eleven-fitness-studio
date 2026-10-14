@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import { LocaleContext } from '../context/LocaleContext';
-import { useTranslations } from '../i18n/useTranslations';
-import Icon from './Icon';
-import ArrowIcon from './ArrowIcon';
+import { LocaleContext } from '../../context/LocaleContext';
+import { useTranslations } from '../../i18n/useTranslations';
+import Icon from '../ui/Icon';
+import ArrowIcon from '../ui/ArrowIcon';
 
 export default function MembershipCard({ plan }) {
   const t = useTranslations('MembershipCard');

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { LocaleContext } from '../context/LocaleContext';
+import { LocaleContext } from '../../context/LocaleContext';
 import Icon from './Icon';
 
 export default function ArrowIcon() {

@@ -34,22 +34,22 @@ src/
   messages/index.js         Exports the message dictionaries by locale
   i18n/useTranslations.js   Local hook for namespaced static-string lookup
   components/
-    Header.jsx, Hero.jsx, Main.jsx, Footer.jsx
-    ClassCard.jsx, TrainerCard.jsx, MembershipCard.jsx
-    SaveToggle.jsx         Reusable controlled item toggle
-    Brand.jsx, Icon.jsx, ArrowIcon.jsx
+    layout/                 Header, Main and Footer
+    sections/               Hero, ScheduleSection, TrainersSection, MembershipSection
+    cards/                  ClassCard, TrainerCard, MembershipCard
+    ui/                     Brand, Icon, ArrowIcon and controlled SaveToggle
 scripts/check-data.js      Node assertions; no testing libraries
 public/assets/             Original local images, fonts, icons and license
 ```
 
-`Main` renders the Hero and three content sections inside one semantic main element. Repeated content comes from arrays of objects and is rendered with `map` and stable IDs. Monday and Thursday's Strength classes have separate session IDs.
+`Main` composes `Hero`, `ScheduleSection`, `TrainersSection` and `MembershipSection` inside one semantic main element. Each section owns its markup and reads its own message namespace. Repeated content comes from arrays of objects and is rendered with `map` and stable IDs. Monday and Thursday's Strength classes have separate session IDs.
 
 ## Interactions and assessment concepts
 
-- `Main` owns `category` with `useState`. Selecting a filter updates that state. `filter` derives the visible classes without changing the source array or storing a second list in state.
-- `Main` also owns `savedById`, an object keyed by session ID. A functional state update copies the previous object and changes one session's value.
+- `ScheduleSection` owns `category` with `useState`. Selecting a filter updates that state. `filter` derives the visible classes without changing the source array or storing a second list in state.
+- `ScheduleSection` also owns `savedById`, an object keyed by session ID. A functional state update copies the previous object and changes one session's value.
 - `ClassCard` receives its saved value and change callback. It passes them to `SaveToggle` as `value` and `onChange`, following the controlled QuantityStepper pattern. The toggle has no internal state; it calls `onChange(!value)`.
-- Saved values remain in `Main` when filtering unmounts a class card, so returning to All restores its selection. Another class's selection stays independent.
+- Saved values remain in `ScheduleSection` when filtering unmounts a class card, so returning to All restores its selection. Another class's selection stays independent.
 - Both languages use the same session IDs and category values. UI messages live in English and Arabic JSON dictionaries, grouped by component namespace with shared labels in `Common`. `LocaleContext` provides the current locale. Components call the local `useTranslations(namespace)` hook to obtain `t`, then render a string with `t(key)`. RTL utilities and logical spacing preserve the Arabic layout.
 - Unprefixed Tailwind classes describe the phone layout. `md:` and `lg:` adapt the existing tablet and desktop layout. Motion is enabled only with `motion-safe:`.
 

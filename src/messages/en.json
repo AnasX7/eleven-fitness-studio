@@ -22,16 +22,20 @@
     "imageAlt": "An athlete training with battle ropes in a gym",
     "meetTrainers": "Meet the trainers"
   },
-  "Main": {
-    "scheduleTitle": "Class Schedule",
-    "scheduleDescription": "Strength, cardio and recovery. Find your next class.",
-    "trainersTitle": "Trainer Bios",
-    "trainersDescription": "Thoughtful coaching. Support at every step.",
-    "membershipTitle": "Membership Tiers",
-    "membershipDescription": "Choose the plan that fits your routine.",
+  "ScheduleSection": {
+    "title": "Class Schedule",
+    "description": "Strength, cardio and recovery. Find your next class.",
     "weeklySchedule": "Weekly schedule",
     "weeklyClasses": "Weekly classes",
     "filterLabel": "Filter classes by category"
+  },
+  "TrainersSection": {
+    "title": "Trainer Bios",
+    "description": "Thoughtful coaching. Support at every step."
+  },
+  "MembershipSection": {
+    "title": "Membership Tiers",
+    "description": "Choose the plan that fits your routine."
   },
   "Footer": {
     "description": "Strength, conditioning and mobility. Coaching for every level, progress at your pace.",

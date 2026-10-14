@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import { LocaleContext } from '../context/LocaleContext';
-import { useTranslations } from '../i18n/useTranslations';
-import { navigation } from '../data/studio';
-import Brand from './Brand';
+import { LocaleContext } from '../../context/LocaleContext';
+import { useTranslations } from '../../i18n/useTranslations';
+import { navigation } from '../../data/studio';
+import Brand from '../ui/Brand';
 
 export default function Footer() {
   const t = useTranslations('Footer');
