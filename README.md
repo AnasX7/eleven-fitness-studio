@@ -14,19 +14,20 @@ npm run build
 npm run preview
 ```
 
-Open `/index.html` for English or `/ar.html` for Arabic. Vite builds both HTML entries, which mount the same React app. Each entry sets its language, direction, title and description. The JavaScript entry reads the document language once and provides it through `LocaleContext`. Components read the locale with `useContext`, without passing it through intermediate components. Language links reload the other page; temporary filters and saved selections reset.
+Open `/` or `/index.html`. One HTML entry mounts the app in either language. `LocaleProvider` initializes `locale` from the `localStorage` key `locale`, accepting `en` or `ar` and defaulting to English. It provides `{ locale, setLocale }` through `LocaleContext`. The language button updates state without reloading or changing the URL, so the current filter and saved selections remain. The preference is saved for future visits; if browser storage is unavailable, switching still works for the current visit.
 
 ## Structure
 
 ```text
-index.html, ar.html        Language-specific HTML entry shells
-vite.config.js            React, Tailwind and both build inputs
+index.html                Shared HTML entry with English defaults
+vite.config.js            React and Tailwind plugins
 eslint.config.js          JavaScript, React Hooks and Fast Refresh lint rules
 src/
-  main.jsx                React mount and initial locale
+  main.jsx                React mount and locale provider
   App.jsx                 Header, Main and Footer composition
   index.css               Tailwind import, theme, local fonts and base rules
   context/LocaleContext.js App-wide locale context
+  context/LocaleProvider.jsx Locale state, persistence and document metadata
   data/studio.js            Classes, trainers, memberships, navigation and categories
   messages/en.json          English interface messages, grouped by namespace
   messages/ar.json          Arabic interface messages, grouped by namespace
@@ -48,7 +49,8 @@ public/assets/             Original local images, fonts, icons and license
 - `ScheduleSection` also owns `savedById`, an object keyed by session ID. A functional state update copies the previous object and changes one session's value.
 - `ClassCard` receives its saved value and change callback. It passes them to `SaveToggle` as `value` and `onChange`, following the controlled QuantityStepper pattern. The toggle has no internal state; it calls `onChange(!value)`.
 - Saved values remain in `ScheduleSection` when filtering unmounts a class card, so returning to All restores its selection. Another class's selection stays independent.
-- Both languages use the same session IDs and category values. UI messages live in English and Arabic JSON dictionaries, grouped by component namespace with shared labels in `Common`. `LocaleContext` provides the current locale. Components call the local `useTranslations(namespace)` hook to obtain `t`, then render a string with `t(key)`. Components needing multiple namespaces call `useTranslations()` once and use qualified keys such as `t('Footer.description')` and `t('Common.brand')`. RTL utilities and logical spacing preserve the Arabic layout.
+- `LocaleProvider` owns the language with `useState`. `useLayoutEffect` synchronizes the document language, direction, title and description before paint. `useEffect` persists the preference to `localStorage`; only the language is persisted.
+- Both languages use the same session IDs and category values. UI messages live in English and Arabic JSON dictionaries, grouped by component namespace with shared labels in `Common`. `LocaleContext` provides the current locale and its setter. Consumers read `{ locale }` with `useContext`. Components call the local `useTranslations(namespace)` hook to obtain `t`, then render a string with `t(key)`. Components needing multiple namespaces call `useTranslations()` once and use qualified keys such as `t('Footer.description')` and `t('Common.brand')`. RTL utilities and logical spacing preserve the Arabic layout.
 - Unprefixed Tailwind classes describe the phone layout. `md:` and `lg:` adapt the existing tablet and desktop layout. Motion is enabled only with `motion-safe:`.
 
 The local translation hook follows next-intl’s namespace and `useTranslations`/`t` naming. It supports static strings only; it does not implement interpolation, pluralization or formatting, and next-intl is not installed. Studio content arrays stay together in one JavaScript data file.
@@ -59,13 +61,13 @@ This implementation uses the instructor example to understand React patterns, wh
 
 `npm run lint` checks JavaScript and JSX, React Hooks usage and Fast Refresh exports, failing on any warnings. Browser code uses browser globals; configuration files use Node globals. Generated build output is ignored. ESLint is development tooling; no runtime or testing library was added.
 
-`npm run build` produces both language entries; check them through `npm run preview` as well as the dev server.
+`npm run build` produces a single `index.html`; check both languages through `npm run preview` as well as the dev server. Use the header language button to switch. The HTML shell has English metadata; JavaScript applies the saved locale and its metadata when the app mounts.
 
 Check both languages at **375px, 768px and 1440px**:
 
 1. All shows five classes. Strength shows two; Conditioning, Mobility and Mixed training each show one. All restores the original order. Filter buttons expose their selected state with `aria-pressed`.
-2. Save Monday's Strength class: Thursday remains unsaved. Save a second class, switch filters and return to All: both selections remain. Unsave one: the other remains saved. Reload or change language: temporary selections reset.
-3. Use Tab, Enter and Space to operate links, filters, save toggles and the native mobile menu. Focus must remain visible. Trainer and membership links must reach their target anchors.
+2. Save Monday's Strength class: Thursday remains unsaved. Save a second class, switch filters and return to All: both selections remain. Unsave one: the other remains saved. Change language: the filter and saved values remain, with translated labels. Reload: temporary selections reset, while the language preference remains.
+3. Use Tab, Enter and Space to operate links, filters, save toggles and the native mobile menu. Focus must remain visible. Trainer and membership links must reach their target anchors. The language button must work with Enter and Space, preserve focus, and leave the URL unchanged.
 4. Check the header, hero crop/overlay, schedule, trainer cards, featured membership and footer against the original design. Images and local font weights must load. Confirm Arabic text, numerals, RTL spacing and arrow direction.
 5. Confirm no horizontal scrolling, including with the menu open and enlarged text. In the browser console, run:
 
@@ -74,6 +76,7 @@ Check both languages at **375px, 768px and 1440px**:
    ```
 
 6. With reduced motion enabled, smooth scrolling and optional transitions should stop. Check the console for errors and missing assets.
+7. With no saved preference or an invalid `locale` value, the app starts in English. Save Arabic and reload or reopen the site: it starts in Arabic with RTL direction and translated metadata. Block storage reads and writes: switching still works without errors.
 
 During migration, the production build, browser assertions and screenshots were checked at each meaningful stage. Browser automation uses externally available tooling rather than adding a library to this project.
 

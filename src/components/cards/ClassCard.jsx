@@ -6,7 +6,7 @@ import SaveToggle from '../ui/SaveToggle';
 
 export default function ClassCard({ session, trainer, saved, onSavedChange }) {
   const t = useTranslations('Common');
-  const locale = useContext(LocaleContext);
+  const { locale } = useContext(LocaleContext);
 
   return (
     <li

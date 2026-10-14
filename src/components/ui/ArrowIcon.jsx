@@ -3,7 +3,7 @@ import { LocaleContext } from '../../context/LocaleContext';
 import Icon from './Icon';
 
 export default function ArrowIcon() {
-  const locale = useContext(LocaleContext);
+  const { locale } = useContext(LocaleContext);
 
   return (
     <Icon

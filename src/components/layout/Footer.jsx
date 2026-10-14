@@ -6,7 +6,7 @@ import Brand from '../ui/Brand';
 
 export default function Footer() {
   const t = useTranslations();
-  const locale = useContext(LocaleContext);
+  const { locale } = useContext(LocaleContext);
 
   return (
     <footer className="overflow-clip border-t border-border bg-surface">

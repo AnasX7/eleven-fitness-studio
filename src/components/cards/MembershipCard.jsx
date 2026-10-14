@@ -6,7 +6,7 @@ import ArrowIcon from '../ui/ArrowIcon';
 
 export default function MembershipCard({ plan }) {
   const t = useTranslations();
-  const locale = useContext(LocaleContext);
+  const { locale } = useContext(LocaleContext);
 
   return (
     <article

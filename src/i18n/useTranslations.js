@@ -3,7 +3,7 @@ import { LocaleContext } from '../context/LocaleContext.js';
 import { messages } from '../messages/index.js';
 
 export function useTranslations(namespace) {
-  const locale = useContext(LocaleContext);
+  const { locale } = useContext(LocaleContext);
   const localeMessages = messages[locale];
 
   return (key) => {

@@ -5,7 +5,7 @@ import ArrowIcon from '../ui/ArrowIcon';
 
 export default function TrainerCard({ trainer }) {
   const t = useTranslations('Common');
-  const locale = useContext(LocaleContext);
+  const { locale } = useContext(LocaleContext);
 
   return (
     <article

@@ -7,7 +7,7 @@ import Icon from '../ui/Icon';
 
 export default function Header() {
   const t = useTranslations('Header');
-  const locale = useContext(LocaleContext);
+  const { locale, setLocale } = useContext(LocaleContext);
 
   const targetLocale = locale === 'ar' ? 'en' : 'ar';
 
@@ -30,17 +30,17 @@ export default function Header() {
           </ul>
         </nav>
         <div className="ms-auto flex items-center gap-2 lg:gap-5">
-          <a
-            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-3 py-2 text-[0.9rem] font-bold hover:bg-accent hover:text-background focus-visible:bg-accent focus-visible:text-background motion-safe:transition-colors motion-safe:duration-250"
-            href={locale === 'ar' ? 'index.html' : 'ar.html'}
+          <button
+            className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-border px-3 py-2 text-[0.9rem] font-bold hover:bg-accent hover:text-background focus-visible:bg-accent focus-visible:text-background motion-safe:transition-colors motion-safe:duration-250"
+            type="button"
+            onClick={() => setLocale(targetLocale)}
             lang={targetLocale}
             dir={targetLocale === 'ar' ? 'rtl' : 'ltr'}
-            hrefLang={targetLocale}
             aria-label={t('languageAriaLabel')}
           >
             <Icon name="translation" />
             <span>{t('languageLabel')}</span>
-          </a>
+          </button>
           <details className="group block lg:hidden">
             <summary
               className="flex size-11 cursor-pointer list-none items-center justify-center rounded-full border border-border hover:bg-accent hover:text-background focus-visible:bg-accent focus-visible:text-background group-open:bg-accent group-open:text-background motion-safe:transition-colors motion-safe:duration-250 [&::-webkit-details-marker]:hidden"

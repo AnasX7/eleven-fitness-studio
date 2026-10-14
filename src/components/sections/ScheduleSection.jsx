@@ -7,7 +7,7 @@ import Icon from '../ui/Icon';
 
 export default function ScheduleSection() {
   const t = useTranslations('ScheduleSection');
-  const locale = useContext(LocaleContext);
+  const { locale } = useContext(LocaleContext);
   const [category, setCategory] = useState('all');
 
   // Keep selections above the cards so filtering a card out does not erase its saved value.
