@@ -5,8 +5,7 @@ import { navigation } from '../../data/studio';
 import Brand from '../ui/Brand';
 
 export default function Footer() {
-  const t = useTranslations('Footer');
-  const tCommon = useTranslations('Common');
+  const t = useTranslations();
   const locale = useContext(LocaleContext);
 
   return (
@@ -16,7 +15,7 @@ export default function Footer() {
           <div className="min-w-0">
             <Brand />
             <p className="mt-3 text-[0.9rem] text-muted md:mt-4 md:max-w-[34ch]">
-              {t('description')}
+              {t('Footer.description')}
             </p>
           </div>
           <nav className="min-w-0" aria-labelledby="footer-links-title">
@@ -24,7 +23,7 @@ export default function Footer() {
               className="mb-2 text-xs leading-[1.7] tracking-[0.08em] uppercase md:mb-3 rtl:tracking-normal"
               id="footer-links-title"
             >
-              {t('explore')}
+              {t('Footer.explore')}
             </h3>
             <ul className="flex flex-wrap gap-1 md:flex-col md:items-start" role="list">
               {navigation.map((link) => (
@@ -41,10 +40,10 @@ export default function Footer() {
           </nav>
           <div className="min-w-0">
             <h3 className="mb-2 text-xs leading-[1.7] tracking-[0.08em] uppercase md:mb-3 rtl:tracking-normal">
-              {t('approach')}
+              {t('Footer.approach')}
             </h3>
             <p className="text-[0.9rem] text-muted md:max-w-[34ch]">
-              {t('approachDescription')}
+              {t('Footer.approachDescription')}
             </p>
           </div>
         </div>
@@ -53,10 +52,10 @@ export default function Footer() {
             className="text-[min(18cqw,12rem)] leading-[0.8] font-black tracking-[-0.06em] rtl:leading-[1.3] rtl:tracking-normal"
             aria-hidden="true"
           >
-            {tCommon('brand')}
+            {t('Common.brand')}
           </p>
           <p className="self-start text-start text-xs text-muted md:ms-auto md:self-auto md:text-end md:rtl:self-end">
-            {t('copyright')}
+            {t('Footer.copyright')}
           </p>
         </div>
       </div>
