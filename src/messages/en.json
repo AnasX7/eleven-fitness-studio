@@ -1,0 +1,54 @@
+{
+  "Common": {
+    "brand": "ELEVEN",
+    "brandCaption": "FITNESS STUDIO",
+    "homeLabel": "ELEVEN Fitness Studio home",
+    "findClass": "Find your class",
+    "currency": "AED",
+    "pricePeriod": "/ month",
+    "aboutPlan": "About this plan",
+    "withCoach": "With"
+  },
+  "Header": {
+    "navigationLabel": "Main navigation",
+    "menuLabel": "Navigation menu",
+    "languageLabel": "العربية",
+    "languageAriaLabel": "عرض الموقع بالعربية"
+  },
+  "Hero": {
+    "title": "SHOW UP.",
+    "accent": "GET STRONG.",
+    "description": "Good coaching. A little encouragement. A stronger you, one class at a time.",
+    "imageAlt": "An athlete training with battle ropes in a gym",
+    "meetTrainers": "Meet the trainers"
+  },
+  "ScheduleSection": {
+    "title": "Class Schedule",
+    "description": "Strength, cardio and recovery. Find your next class.",
+    "weeklySchedule": "Weekly schedule",
+    "weeklyClasses": "Weekly classes",
+    "filterLabel": "Filter classes by category"
+  },
+  "TrainersSection": {
+    "title": "Trainer Bios",
+    "description": "Thoughtful coaching. Support at every step."
+  },
+  "MembershipSection": {
+    "title": "Membership Tiers",
+    "description": "Choose the plan that fits your routine."
+  },
+  "Footer": {
+    "description": "Strength, conditioning and mobility. Coaching for every level, progress at your pace.",
+    "explore": "Explore ELEVEN",
+    "approach": "Our approach",
+    "approachDescription": "Good coaching. Consistent movement. Progress at your pace.",
+    "copyright": "© 2026 ELEVEN. All rights reserved."
+  },
+  "MembershipCard": {
+    "planLabel": "For a steady routine"
+  },
+  "SaveToggle": {
+    "save": "Save class",
+    "saved": "Saved"
+  }
+}
