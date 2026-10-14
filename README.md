@@ -83,8 +83,8 @@ During migration, the production build, browser assertions and screenshots were 
 
 ## Branches and assets
 
-- `codex/week-1-html-css` preserves the original implementation.
-- `codex/week-2-react-tailwind` contains the Week 2 migration.
+- `legacy/html-css` preserves the original implementation.
+- `feat/react-tailwind` contains the Week 2 migration.
 - `main` is unchanged until an explicitly authorized merge.
 
 Typography: local Thmanyah Sans. Icons: [Hugeicons Stroke Rounded](https://hugeicons.com/icons/stroke-rounded), with the upstream [MIT license](public/assets/icons/LICENSE.txt). Images: generated fictional studio photography.
