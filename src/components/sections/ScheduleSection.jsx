@@ -1,7 +1,9 @@
 import { useContext, useState } from 'react';
 import { LocaleContext } from '../../context/LocaleContext';
 import { useTranslations } from '../../i18n/useTranslations';
-import { categories, classes, trainers } from '../../data/studio';
+import { categories } from '../../data/categories';
+import { classes } from '../../data/classes';
+import { trainers } from '../../data/trainers';
 import ClassCard from '../cards/ClassCard';
 import Icon from '../ui/Icon';
 

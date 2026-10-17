@@ -1,5 +1,5 @@
 import { useTranslations } from '../../i18n/useTranslations';
-import { trainers } from '../../data/studio';
+import { trainers } from '../../data/trainers';
 import TrainerCard from '../cards/TrainerCard';
 
 export default function TrainersSection() {

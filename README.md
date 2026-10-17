@@ -28,7 +28,12 @@ src/
   index.css               Tailwind import, theme, local fonts and base rules
   context/LocaleContext.js App-wide locale context
   context/LocaleProvider.jsx Locale state, persistence and document metadata
-  data/studio.js            Classes, trainers, memberships, navigation and categories
+  data/
+    categories.js           Class filter options
+    classes.js              Weekly class sessions
+    trainers.js             Trainer profiles
+    memberships.js          Membership plans, prices and features
+    navigation.js           Header and footer links
   messages/en.json          English interface messages, grouped by namespace
   messages/ar.json          Arabic interface messages, grouped by namespace
   messages/index.js         Exports the message dictionaries by locale
@@ -53,7 +58,7 @@ public/assets/             Original local images, fonts, icons and license
 - Both languages use the same session IDs and category values. UI messages live in English and Arabic JSON dictionaries, grouped by component namespace with shared labels in `Common`. `LocaleContext` provides the current locale and its setter. Consumers read `{ locale }` with `useContext`. Components call the local `useTranslations(namespace)` hook to obtain `t`, then render a string with `t(key)`. Components needing multiple namespaces call `useTranslations()` once and use qualified keys such as `t('Footer.description')` and `t('Common.brand')`. RTL utilities and logical spacing preserve the Arabic layout.
 - Unprefixed Tailwind classes describe the phone layout. `md:` and `lg:` adapt the existing tablet and desktop layout. Motion is enabled only with `motion-safe:`.
 
-The local translation hook follows next-intl’s namespace and `useTranslations`/`t` naming. It supports static strings only; it does not implement interpolation, pluralization or formatting, and next-intl is not installed. Studio content arrays stay together in one JavaScript data file.
+The local translation hook follows next-intl’s namespace and `useTranslations`/`t` naming. It supports static strings only; it does not implement interpolation, pluralization or formatting, and next-intl is not installed. Studio content is organized into separate JavaScript files in `src/data`, each exporting a named array. Components import the arrays they need directly.
 
 This implementation uses the instructor example to understand React patterns, while retaining this repository's own design, assets and content.
 

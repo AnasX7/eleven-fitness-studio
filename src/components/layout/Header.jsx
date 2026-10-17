@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { LocaleContext } from '../../context/LocaleContext';
 import { useTranslations } from '../../i18n/useTranslations';
-import { navigation } from '../../data/studio';
+import { navigation } from '../../data/navigation';
 import Brand from '../ui/Brand';
 import Icon from '../ui/Icon';
 

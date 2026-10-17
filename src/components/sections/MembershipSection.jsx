@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslations } from '../../i18n/useTranslations';
-import { memberships } from '../../data/studio';
+import { memberships } from '../../data/memberships';
 import MembershipCard from '../cards/MembershipCard';
 
 export default function MembershipSection() {
