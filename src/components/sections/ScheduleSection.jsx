@@ -1,20 +1,22 @@
-import { useContext, useState } from 'react';
-import { LocaleContext } from '../../context/LocaleContext';
+import { useState } from 'react';
 import { useTranslations } from '../../i18n/useTranslations';
-import { categories } from '../../data/categories';
 import { classes } from '../../data/classes';
 import { trainers } from '../../data/trainers';
 import ClassCard from '../cards/ClassCard';
+import ClassFilter from '../ui/ClassFilter';
 import Icon from '../ui/Icon';
 
 export default function ScheduleSection() {
   const t = useTranslations('ScheduleSection');
-  const { locale } = useContext(LocaleContext);
   const [category, setCategory] = useState('all');
 
   const visibleClasses = category === 'all'
     ? classes
     : classes.filter((session) => session.category === category);
+
+  function handleCategoryChange(value) {
+    setCategory(value);
+  }
 
   return (
     <section
@@ -31,20 +33,7 @@ export default function ScheduleSection() {
             {t('description')}
           </p>
         </div>
-        <div className="mb-4 flex flex-wrap gap-2" role="group" aria-label={t('filterLabel')}>
-          {categories.map((option) => (
-            <button
-              key={option.id}
-              type="button"
-              data-category={option.id}
-              aria-pressed={category === option.id}
-              onClick={() => setCategory(option.id)}
-              className={`min-h-11 cursor-pointer rounded-full border border-solid px-4 py-2 font-sans text-sm font-bold leading-[1.7] motion-safe:transition-colors ${category === option.id ? 'border-accent bg-accent text-background' : 'border-border bg-transparent text-text hover:border-accent hover:text-accent'}`}
-            >
-              {option.label[locale]}
-            </button>
-          ))}
-        </div>
+        <ClassFilter value={category} onChange={handleCategoryChange} />
         <div className="mb-4 flex flex-wrap items-center justify-between gap-x-8 gap-y-2 text-[0.8rem] text-muted">
           <p className="flex items-center gap-[0.65rem] font-bold text-text [&>svg]:text-accent">
             <Icon name="calendar-03" />

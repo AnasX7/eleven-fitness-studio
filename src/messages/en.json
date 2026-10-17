@@ -11,13 +11,15 @@
     "currency": "AED",
     "pricePeriod": "/ month",
     "aboutPlan": "About this plan",
-    "withCoach": "With"
+    "withCoach": "With",
+    "navigationLabel": "Main navigation"
   },
-  "Header": {
-    "navigationLabel": "Main navigation",
-    "menuLabel": "Navigation menu",
-    "languageLabel": "العربية",
-    "languageAriaLabel": "عرض الموقع بالعربية"
+  "LanguageSwitcher": {
+    "label": "العربية",
+    "ariaLabel": "عرض الموقع بالعربية"
+  },
+  "MobileMenu": {
+    "label": "Navigation menu"
   },
   "Hero": {
     "title": "SHOW UP.",
@@ -30,8 +32,10 @@
     "title": "Class Schedule",
     "description": "Strength, cardio and recovery. Find your next class.",
     "weeklySchedule": "Weekly schedule",
-    "weeklyClasses": "Weekly classes",
-    "filterLabel": "Filter classes by category"
+    "weeklyClasses": "Weekly classes"
+  },
+  "ClassFilter": {
+    "label": "Filter classes by category"
   },
   "TrainersSection": {
     "title": "Trainer Bios",

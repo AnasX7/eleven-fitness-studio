@@ -39,21 +39,24 @@ src/
   messages/index.js         Exports the message dictionaries by locale
   i18n/useTranslations.js   Local hook for scoped or root static-string lookup
   components/
-    layout/                 Header, Main and Footer
+    layout/                 Header, Main, Footer and MobileMenu
     sections/               Hero, ScheduleSection, TrainersSection, MembershipSection
     cards/                  ClassCard, TrainerCard, MembershipCard
-    ui/                     Brand, Icon, ArrowIcon and controlled QuantityStepper
+    ui/                     Brand, Icon, ArrowIcon, LanguageSwitcher, ClassFilter, QuantityStepper
 public/assets/             Original local images, fonts, icons and license
 ```
+
+`Header` composes the brand, desktop navigation, `LanguageSwitcher` and `MobileMenu`. The mobile menu retains native `<details>` behaviour.
 
 `Main` composes `Hero`, `ScheduleSection`, `TrainersSection` and `MembershipSection` inside one semantic main element. Each section owns its markup and reads its own message namespace. Repeated content comes from arrays of objects and is rendered with `map` and stable IDs. Monday and Thursday's Strength classes have separate session IDs.
 
 ## Interactions and assessment concepts
 
-- `ScheduleSection` owns `category` with `useState`. Selecting a filter updates that state. `filter` derives the visible classes without changing the source array or storing a second list in state.
+- `ScheduleSection` owns `category` with `useState`. It passes `value` and the named `handleCategoryChange` callback to the controlled `ClassFilter`. The filter buttons use `handleCategoryClick` to read their category ID and request a change through `onChange`. `filter` derives the visible classes without changing the source array or storing a second list in state.
 - `MembershipSection` owns `quantities` with `useState`, keyed by membership ID. Each plan starts at one person. A functional state update copies the previous object and changes only that plan's quantity.
 - `MembershipCard` receives its quantity and change callback, then passes them to the reusable `QuantityStepper` as `value` and `onChange`. The stepper has no internal state; its buttons request `value - 1` or `value + 1`. Decrease is disabled at one person.
 - Each card derives its estimated monthly total as `plan.price * quantity`; the total is not stored in state. Original prices remain AED 199, 349 and 499 per person, with no discounts applied. Quantities stay independent and survive filtering and language changes; they reset on reload. This is a local cost estimate, with no booking or checkout.
+- `LanguageSwitcher` reads `locale` and `setLocale` from context and calls the setter through `handleLocaleChange`. It does not create its own language state.
 - `LocaleProvider` owns the language with `useState`. `useLayoutEffect` synchronizes the document language, direction, title and description before paint. `useEffect` persists the preference to `localStorage`; only the language is persisted.
 - Both languages use the same session IDs and category values. UI messages live in English and Arabic JSON dictionaries, grouped by component namespace with shared labels in `Common`. `LocaleContext` provides the current locale and its setter. Consumers read `{ locale }` with `useContext`. Components call the local `useTranslations(namespace)` hook to obtain `t`, then render a string with `t(key)`. Components needing multiple namespaces call `useTranslations()` once and use qualified keys such as `t('Footer.description')` and `t('Common.brand')`. RTL utilities and logical spacing preserve the Arabic layout.
 - Unprefixed Tailwind classes describe the phone layout. `md:` and `lg:` adapt the existing tablet and desktop layout. Motion is enabled only with `motion-safe:`.

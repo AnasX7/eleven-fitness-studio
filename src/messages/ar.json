@@ -11,13 +11,15 @@
     "currency": "درهم",
     "pricePeriod": "/ شهريًا",
     "aboutPlan": "عن هذه العضوية",
-    "withCoach": "مع"
+    "withCoach": "مع",
+    "navigationLabel": "التنقل الرئيسي"
   },
-  "Header": {
-    "navigationLabel": "التنقل الرئيسي",
-    "menuLabel": "قائمة التنقل",
-    "languageLabel": "English",
-    "languageAriaLabel": "View the site in English"
+  "LanguageSwitcher": {
+    "label": "English",
+    "ariaLabel": "View the site in English"
+  },
+  "MobileMenu": {
+    "label": "قائمة التنقل"
   },
   "Hero": {
     "title": "ابدأ اليوم.",
@@ -30,8 +32,10 @@
     "title": "جدول الحصص",
     "description": "قوة، لياقة واستشفاء. اختر حصتك القادمة.",
     "weeklySchedule": "الجدول الأسبوعي",
-    "weeklyClasses": "الحصص الأسبوعية",
-    "filterLabel": "تصفية الحصص حسب النوع"
+    "weeklyClasses": "الحصص الأسبوعية"
+  },
+  "ClassFilter": {
+    "label": "تصفية الحصص حسب النوع"
   },
   "TrainersSection": {
     "title": "نبذة عن المدربين",
