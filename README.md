@@ -52,7 +52,7 @@ public/assets/             Original local images, fonts, icons and license
 
 ## Interactions and assessment concepts
 
-- `ScheduleSection` owns `category` with `useState`. It passes `value` and the named `handleCategoryChange` callback to the controlled `ClassFilter`. The filter buttons use `handleCategoryClick` to read their category ID and request a change through `onChange`. `filter` derives the visible classes without changing the source array or storing a second list in state.
+- `ScheduleSection` owns `category` with `useState`. It passes `value` and the named `handleCategoryChange` callback to the controlled `ClassFilter`. Each filter button passes `option.id` directly to `handleCategoryClick`, which requests a change through `onChange`. The `data-category` attribute remains available for browser checks. `filter` derives the visible classes without changing the source array or storing a second list in state.
 - `MembershipSection` owns `quantities` with `useState`, keyed by membership ID. Each plan starts at one person. A functional state update copies the previous object and changes only that plan's quantity.
 - `MembershipCard` receives its quantity and change callback, then passes them to the reusable `QuantityStepper` as `value` and `onChange`. The stepper has no internal state; its buttons request `value - 1` or `value + 1`. Decrease is disabled at one person.
 - Each card derives its estimated monthly total as `plan.price * quantity`; the total is not stored in state. Original prices remain AED 199, 349 and 499 per person, with no discounts applied. Quantities stay independent and survive filtering and language changes; they reset on reload. This is a local cost estimate, with no booking or checkout.

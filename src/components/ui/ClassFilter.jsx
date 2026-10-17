@@ -7,8 +7,8 @@ export default function ClassFilter({ value, onChange }) {
   const t = useTranslations('ClassFilter');
   const { locale } = useContext(LocaleContext);
 
-  function handleCategoryClick(event) {
-    onChange(event.currentTarget.dataset.category);
+  function handleCategoryClick(categoryId) {
+    onChange(categoryId);
   }
 
   return (
@@ -19,7 +19,7 @@ export default function ClassFilter({ value, onChange }) {
           type="button"
           data-category={option.id}
           aria-pressed={value === option.id}
-          onClick={handleCategoryClick}
+          onClick={() => handleCategoryClick(option.id)}
           className={`min-h-11 cursor-pointer rounded-full border border-solid px-4 py-2 font-sans text-sm font-bold leading-[1.7] motion-safe:transition-colors ${value === option.id ? 'border-accent bg-accent text-background' : 'border-border bg-transparent text-text hover:border-accent hover:text-accent'}`}
         >
           {option.label[locale]}
