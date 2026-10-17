@@ -32,6 +32,8 @@
   --color-accent: #d0f468;
   --color-accent-hover: #def991;
   --color-border: #464c40;
+  /* Keep stepper controls compact when text is enlarged. */
+  --spacing-stepper: 44px;
   --font-sans: "Thmanyah Sans", Arial, sans-serif;
 }
 

@@ -5,7 +5,7 @@ import MembershipSection from '../sections/MembershipSection';
 
 export default function Main() {
   return (
-    <main className="mx-auto w-full max-w-[1248px] border-x border-border">
+    <main className="mx-auto w-full max-w-312 border-x border-border">
       <Hero />
       <ScheduleSection />
       <TrainersSection />

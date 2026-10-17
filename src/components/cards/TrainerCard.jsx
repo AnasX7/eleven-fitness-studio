@@ -13,7 +13,7 @@ export default function TrainerCard({ trainer }) {
       aria-labelledby={`${trainer.id}-name`}
     >
       <img
-        className="aspect-[4/3] w-full rounded-t-[23px] object-cover object-top"
+        className="aspect-4/3 w-full rounded-t-[23px] object-cover object-top"
         src={trainer.image}
         alt={trainer.imageAlt[locale]}
         width="1024"

@@ -12,7 +12,7 @@ export default function Header() {
 
   return (
     <header className="border-b border-border">
-      <div className="relative mx-auto flex min-h-18 w-full max-w-[1248px] flex-wrap items-center gap-3 border-x border-border px-5 py-1 md:px-6 lg:gap-6">
+      <div className="relative mx-auto flex min-h-18 w-full max-w-312 flex-wrap items-center gap-3 border-x border-border px-5 py-1 md:px-6 lg:gap-6">
         <Brand />
         <nav className="hidden lg:block" aria-label={t('navigationLabel')}>
           <ul className="flex items-center gap-2 text-[0.9rem] font-bold" role="list">

@@ -24,8 +24,8 @@ export default function ScheduleSection() {
       id="schedule"
       aria-labelledby="schedule-title"
     >
-      <div className="mx-auto w-full max-w-[1248px] px-5 md:px-6">
-        <div className="mb-8 max-w-[780px]">
+      <div className="mx-auto w-full max-w-312 px-5 md:px-6">
+        <div className="mb-8 max-w-195">
           <h2 id="schedule-title">
             {t('title')}
           </h2>

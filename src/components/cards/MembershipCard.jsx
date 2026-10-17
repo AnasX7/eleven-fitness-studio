@@ -17,7 +17,7 @@ export default function MembershipCard({ plan, quantity, onQuantityChange }) {
       aria-labelledby={`${plan.id}-title`}
     >
       {plan.featured && (
-        <p className="absolute -top-4 start-6 rounded-full bg-accent px-3 py-1 text-xs font-bold text-background">
+        <p className="absolute -top-4 inset-s-6 rounded-full bg-accent px-3 py-1 text-xs font-bold text-background">
           {t('MembershipCard.planLabel')}
         </p>
       )}
@@ -35,7 +35,7 @@ export default function MembershipCard({ plan, quantity, onQuantityChange }) {
       <p className="min-h-[3.4em] text-[0.85rem] text-muted">
         {plan.description[locale]}
       </p>
-      <p className="mt-1 flex flex-wrap items-baseline gap-x-[0.375rem] gap-y-1 border-b border-border pb-5 text-[clamp(2.25rem,4vw,3rem)] leading-[1.2] font-bold">
+      <p className="mt-1 flex flex-wrap items-baseline gap-x-1.5 gap-y-1 border-b border-border pb-5 text-[clamp(2.25rem,4vw,3rem)] leading-[1.2] font-bold">
         <span className="text-[0.85rem]">
           {t('Common.currency')}
         </span>
@@ -75,7 +75,7 @@ export default function MembershipCard({ plan, quantity, onQuantityChange }) {
         ))}
       </ul>
       <a
-        className={`group mt-auto flex min-h-[52px] items-center justify-between gap-3 rounded-full border px-3 py-[0.8rem] text-[0.9rem] font-bold hover:border-accent-hover hover:bg-accent-hover hover:text-background focus-visible:border-accent-hover focus-visible:bg-accent-hover focus-visible:text-background motion-safe:transition-[background-color,color,border-color,transform] motion-safe:duration-250 motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-px ${plan.featured ? 'border-accent bg-accent text-background' : 'border-border bg-transparent text-text'}`}
+        className={`group mt-auto flex min-h-13 items-center justify-between gap-3 rounded-full border px-3 py-[0.8rem] text-[0.9rem] font-bold hover:border-accent-hover hover:bg-accent-hover hover:text-background focus-visible:border-accent-hover focus-visible:bg-accent-hover focus-visible:text-background motion-safe:transition-[background-color,color,border-color,transform] motion-safe:duration-250 motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-px ${plan.featured ? 'border-accent bg-accent text-background' : 'border-border bg-transparent text-text'}`}
         href={`#${plan.id}-details`}
         aria-label={`${t('Common.aboutPlan')}: ${plan.name[locale]}`}
       >

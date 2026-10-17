@@ -10,7 +10,7 @@ export default function Footer() {
 
   return (
     <footer className="overflow-clip border-t border-border bg-surface">
-      <div className="mx-auto w-full max-w-[1248px] border-x border-border px-5 pt-8 pb-4 md:px-6 md:pt-14 md:pb-2">
+      <div className="mx-auto w-full max-w-312 border-x border-border px-5 pt-8 pb-4 md:px-6 md:pt-14 md:pb-2">
         <div className="grid grid-cols-1 gap-5 pb-6 wrap-anywhere md:grid-cols-[1.5fr_1fr_1fr] md:gap-8 md:pb-10">
           <div className="min-w-0">
             <Brand />

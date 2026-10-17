@@ -11,8 +11,8 @@ export default function TrainersSection() {
       id="trainers"
       aria-labelledby="trainers-title"
     >
-      <div className="mx-auto w-full max-w-[1248px] px-5 md:px-6">
-        <div className="mb-8 max-w-[780px]">
+      <div className="mx-auto w-full max-w-312 px-5 md:px-6">
+        <div className="mb-8 max-w-195">
           <h2 id="trainers-title">
             {t('title')}
           </h2>

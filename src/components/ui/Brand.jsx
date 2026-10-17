@@ -10,7 +10,7 @@ export default function Brand() {
       aria-label={t('homeLabel')}
     >
       <span
-        className="h-8 w-[27px] shrink-0 -skew-x-[16deg] border-x-[9px] border-accent"
+        className="h-8 w-6.75 shrink-0 skew-x-[-16deg] border-x-[9px] border-accent"
         aria-hidden="true"
       />
       <span className="min-w-0">

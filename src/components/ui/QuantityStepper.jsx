@@ -18,7 +18,7 @@ export default function QuantityStepper({ value, onChange, label }) {
     <div className="inline-flex max-w-full items-center gap-1 rounded-full border border-border p-1" role="group" aria-label={label}>
       <button
         type="button"
-        className="flex size-[44px] shrink-0 cursor-pointer items-center justify-center rounded-full text-lg font-bold enabled:hover:bg-accent enabled:hover:text-background motion-safe:transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+        className="flex size-stepper shrink-0 cursor-pointer items-center justify-center rounded-full text-lg font-bold enabled:hover:bg-accent enabled:hover:text-background motion-safe:transition-colors disabled:cursor-not-allowed disabled:opacity-40"
         aria-label={`${t('decrease')}: ${label}`}
         disabled={value <= 1}
         onClick={handleDecrease}
@@ -30,7 +30,7 @@ export default function QuantityStepper({ value, onChange, label }) {
       </output>
       <button
         type="button"
-        className="flex size-[44px] shrink-0 cursor-pointer items-center justify-center rounded-full text-lg font-bold hover:bg-accent hover:text-background motion-safe:transition-colors"
+        className="flex size-stepper shrink-0 cursor-pointer items-center justify-center rounded-full text-lg font-bold hover:bg-accent hover:text-background motion-safe:transition-colors"
         aria-label={`${t('increase')}: ${label}`}
         onClick={handleIncrease}
       >
