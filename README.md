@@ -14,7 +14,7 @@ npm run build
 npm run preview
 ```
 
-Open `/` or `/index.html`. One HTML entry mounts the app in either language. `LocaleProvider` initializes `locale` from the `localStorage` key `locale`, accepting `en` or `ar` and defaulting to English. It provides `{ locale, setLocale }` through `LocaleContext`. The language button updates state without reloading or changing the URL, so the current filter and saved selections remain. The preference is saved for future visits; if browser storage is unavailable, switching still works for the current visit.
+Open `/` or `/index.html`. One HTML entry mounts the app in either language. `LocaleProvider` initializes `locale` from the `localStorage` key `locale`, accepting `en` or `ar` and defaulting to English. It provides `{ locale, setLocale }` through `LocaleContext`. The language button updates state without reloading or changing the URL, so the current filter and membership quantities remain. The preference is saved for future visits; if browser storage is unavailable, switching still works for the current visit.
 
 ## Structure
 
@@ -37,7 +37,7 @@ src/
     layout/                 Header, Main and Footer
     sections/               Hero, ScheduleSection, TrainersSection, MembershipSection
     cards/                  ClassCard, TrainerCard, MembershipCard
-    ui/                     Brand, Icon, ArrowIcon and controlled SaveToggle
+    ui/                     Brand, Icon, ArrowIcon and controlled QuantityStepper
 public/assets/             Original local images, fonts, icons and license
 ```
 
@@ -46,9 +46,9 @@ public/assets/             Original local images, fonts, icons and license
 ## Interactions and assessment concepts
 
 - `ScheduleSection` owns `category` with `useState`. Selecting a filter updates that state. `filter` derives the visible classes without changing the source array or storing a second list in state.
-- `ScheduleSection` also owns `savedById`, an object keyed by session ID. A functional state update copies the previous object and changes one session's value.
-- `ClassCard` receives its saved value and change callback. It passes them to `SaveToggle` as `value` and `onChange`, following the controlled QuantityStepper pattern. The toggle has no internal state; it calls `onChange(!value)`.
-- Saved values remain in `ScheduleSection` when filtering unmounts a class card, so returning to All restores its selection. Another class's selection stays independent.
+- `MembershipSection` owns `quantities` with `useState`, keyed by membership ID. Each plan starts at one person. A functional state update copies the previous object and changes only that plan's quantity.
+- `MembershipCard` receives its quantity and change callback, then passes them to the reusable `QuantityStepper` as `value` and `onChange`. The stepper has no internal state; its buttons request `value - 1` or `value + 1`. Decrease is disabled at one person.
+- Each card derives its estimated monthly total as `plan.price * quantity`; the total is not stored in state. Original prices remain AED 199, 349 and 499 per person, with no discounts applied. Quantities stay independent and survive filtering and language changes; they reset on reload. This is a local cost estimate, with no booking or checkout.
 - `LocaleProvider` owns the language with `useState`. `useLayoutEffect` synchronizes the document language, direction, title and description before paint. `useEffect` persists the preference to `localStorage`; only the language is persisted.
 - Both languages use the same session IDs and category values. UI messages live in English and Arabic JSON dictionaries, grouped by component namespace with shared labels in `Common`. `LocaleContext` provides the current locale and its setter. Consumers read `{ locale }` with `useContext`. Components call the local `useTranslations(namespace)` hook to obtain `t`, then render a string with `t(key)`. Components needing multiple namespaces call `useTranslations()` once and use qualified keys such as `t('Footer.description')` and `t('Common.brand')`. RTL utilities and logical spacing preserve the Arabic layout.
 - Unprefixed Tailwind classes describe the phone layout. `md:` and `lg:` adapt the existing tablet and desktop layout. Motion is enabled only with `motion-safe:`.
@@ -66,8 +66,8 @@ This implementation uses the instructor example to understand React patterns, wh
 Check both languages at **375px, 768px and 1440px**:
 
 1. All shows five classes. Strength shows two; Conditioning, Mobility and Mixed training each show one. All restores the original order. Filter buttons expose their selected state with `aria-pressed`.
-2. Save Monday's Strength class: Thursday remains unsaved. Save a second class, switch filters and return to All: both selections remain. Unsave one: the other remains saved. Change language: the filter and saved values remain, with translated labels. Reload: temporary selections reset, while the language preference remains.
-3. Use Tab, Enter and Space to operate links, filters, save toggles and the native mobile menu. Focus must remain visible. Trainer and membership links must reach their target anchors. The language button must work with Enter and Space, preserve focus, and leave the URL unchanged.
+2. Every membership starts at one person with its original price as the estimate and its decrease button disabled. Increase Regular to two: its estimate becomes AED 698; Starter and All In stay at one. Change another plan and decrease Regular: the other quantity remains unchanged. Change a class filter or switch language: quantities remain, with localized labels and numbers. Reload: quantities reset to one while the language preference remains.
+3. Use Tab, Enter and Space to operate links, filters, quantity steppers and the native mobile menu. Focus must remain visible. Trainer and membership links must reach their target anchors. The language button must work with Enter and Space, preserve focus, and leave the URL unchanged.
 4. Check the header, hero crop/overlay, schedule, trainer cards, featured membership and footer against the original design. Images and local font weights must load. Confirm Arabic text, numerals, RTL spacing and arrow direction.
 5. Confirm no horizontal scrolling, including with the menu open and enlarged text. In the browser console, run:
 

@@ -10,9 +10,6 @@ export default function ScheduleSection() {
   const { locale } = useContext(LocaleContext);
   const [category, setCategory] = useState('all');
 
-  // Keep selections above the cards so filtering a card out does not erase its saved value.
-  const [savedById, setSavedById] = useState({});
-
   const visibleClasses = category === 'all'
     ? classes
     : classes.filter((session) => session.category === category);
@@ -58,13 +55,6 @@ export default function ScheduleSection() {
               key={session.id}
               session={session}
               trainer={trainers.find((trainer) => trainer.id === session.trainerId)}
-              saved={savedById[session.id] ?? false}
-              onSavedChange={(value) =>
-                setSavedById((previous) => ({
-                  ...previous,
-                  [session.id]: value,
-                }))
-              }
             />
           ))}
         </ul>

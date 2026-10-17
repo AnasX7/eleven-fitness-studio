@@ -39,7 +39,8 @@
   },
   "MembershipSection": {
     "title": "Membership Tiers",
-    "description": "Choose the plan that fits your routine."
+    "description": "Choose the plan that fits your routine.",
+    "estimatorDescription": "Prices are per person. Adjust the number of people to estimate your monthly cost."
   },
   "Footer": {
     "description": "Strength, conditioning and mobility. Coaching for every level, progress at your pace.",
@@ -49,10 +50,12 @@
     "copyright": "© 2026 ELEVEN. All rights reserved."
   },
   "MembershipCard": {
-    "planLabel": "For a steady routine"
+    "planLabel": "For a steady routine",
+    "people": "Number of people",
+    "estimatedTotal": "Estimated monthly total"
   },
-  "SaveToggle": {
-    "save": "Save class",
-    "saved": "Saved"
+  "QuantityStepper": {
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity"
   }
 }

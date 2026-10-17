@@ -2,9 +2,8 @@ import { useContext } from 'react';
 import { LocaleContext } from '../../context/LocaleContext';
 import { useTranslations } from '../../i18n/useTranslations';
 import Icon from '../ui/Icon';
-import SaveToggle from '../ui/SaveToggle';
 
-export default function ClassCard({ session, trainer, saved, onSavedChange }) {
+export default function ClassCard({ session, trainer }) {
   const t = useTranslations('Common');
   const { locale } = useContext(LocaleContext);
 
@@ -63,11 +62,6 @@ export default function ClassCard({ session, trainer, saved, onSavedChange }) {
             {t('withCoach')} {trainer.name[locale]}
           </span>
         </p>
-        <SaveToggle
-          value={saved}
-          onChange={onSavedChange}
-          label={`${session.title[locale]} · ${session.day[locale]}`}
-        />
       </div>
     </li>
   );

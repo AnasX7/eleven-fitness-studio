@@ -3,10 +3,13 @@ import { LocaleContext } from '../../context/LocaleContext';
 import { useTranslations } from '../../i18n/useTranslations';
 import Icon from '../ui/Icon';
 import ArrowIcon from '../ui/ArrowIcon';
+import QuantityStepper from '../ui/QuantityStepper';
 
-export default function MembershipCard({ plan }) {
+export default function MembershipCard({ plan, quantity, onQuantityChange }) {
   const t = useTranslations();
   const { locale } = useContext(LocaleContext);
+  const numberLocale = locale === 'ar' ? 'ar-u-nu-arab' : 'en';
+  const estimatedTotal = plan.price * quantity;
 
   return (
     <article
@@ -36,11 +39,33 @@ export default function MembershipCard({ plan }) {
         <span className="text-[0.85rem]">
           {t('Common.currency')}
         </span>
-        <bdi>{plan.price.toLocaleString(locale === 'ar' ? 'ar-u-nu-arab' : 'en')}</bdi>
+        <bdi>{plan.price.toLocaleString(numberLocale)}</bdi>
         <span className="text-[0.85rem] font-normal text-muted">
           {t('Common.pricePeriod')}
         </span>
       </p>
+      <div className="grid min-w-0 gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-[0.85rem] text-muted">
+            {t('MembershipCard.people')}
+          </p>
+          <QuantityStepper
+            value={quantity}
+            onChange={onQuantityChange}
+            label={`${t('MembershipCard.people')}: ${plan.name[locale]}`}
+          />
+        </div>
+        <p className="grid gap-1" id={`${plan.id}-estimate`}>
+          <span className="text-[0.8rem] text-muted">
+            {t('MembershipCard.estimatedTotal')}
+          </span>
+          <span className="flex flex-wrap items-baseline gap-x-1.5 gap-y-1 text-lg font-bold">
+            <span className="text-[0.85rem]">{t('Common.currency')}</span>
+            <bdi>{estimatedTotal.toLocaleString(numberLocale)}</bdi>
+            <span className="text-[0.8rem] font-normal text-muted">{t('Common.pricePeriod')}</span>
+          </span>
+        </p>
+      </div>
       <ul role="list" className="mb-4 grid gap-3 text-[0.85rem]" id={`${plan.id}-details`} tabIndex={-1}>
         {plan.features.map((feature) => (
           <li className="flex items-start gap-2.5" key={feature.id}>

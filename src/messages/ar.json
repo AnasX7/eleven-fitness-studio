@@ -39,7 +39,8 @@
   },
   "MembershipSection": {
     "title": "باقات العضوية",
-    "description": "اختر العضوية التي تناسب روتينك."
+    "description": "اختر العضوية التي تناسب روتينك.",
+    "estimatorDescription": "الأسعار للشخص الواحد. غيّر عدد الأشخاص لحساب التكلفة الشهرية التقديرية."
   },
   "Footer": {
     "description": "قوة، لياقة وحركة. تدريب يناسب مستواك وتقدّم على إيقاعك.",
@@ -49,10 +50,12 @@
     "copyright": "© ٢٠٢٦ إليفن. جميع الحقوق محفوظة."
   },
   "MembershipCard": {
-    "planLabel": "لروتين منتظم"
+    "planLabel": "لروتين منتظم",
+    "people": "عدد الأشخاص",
+    "estimatedTotal": "التكلفة الشهرية التقديرية"
   },
-  "SaveToggle": {
-    "save": "احفظ الحصة",
-    "saved": "تم الحفظ"
+  "QuantityStepper": {
+    "decrease": "تقليل العدد",
+    "increase": "زيادة العدد"
   }
 }

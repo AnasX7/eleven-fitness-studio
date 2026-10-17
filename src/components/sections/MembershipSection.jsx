@@ -1,9 +1,18 @@
+import { useState } from 'react';
 import { useTranslations } from '../../i18n/useTranslations';
 import { memberships } from '../../data/studio';
 import MembershipCard from '../cards/MembershipCard';
 
 export default function MembershipSection() {
   const t = useTranslations('MembershipSection');
+  const [quantities, setQuantities] = useState({});
+
+  function handleQuantityChange(planId, value) {
+    setQuantities((previous) => ({
+      ...previous,
+      [planId]: value,
+    }));
+  }
 
   return (
     <section
@@ -19,10 +28,18 @@ export default function MembershipSection() {
           <p className="mt-3 max-w-[52ch] text-muted">
             {t('description')}
           </p>
+          <p className="mt-3 max-w-[60ch] text-sm text-muted">
+            {t('estimatorDescription')}
+          </p>
         </div>
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-6 @max-[36rem]:grid-cols-1">
           {memberships.map((plan) => (
-            <MembershipCard key={plan.id} plan={plan} />
+            <MembershipCard
+              key={plan.id}
+              plan={plan}
+              quantity={quantities[plan.id] ?? 1}
+              onQuantityChange={(value) => handleQuantityChange(plan.id, value)}
+            />
           ))}
         </div>
       </div>
