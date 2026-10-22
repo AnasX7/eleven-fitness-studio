@@ -1,37 +1,40 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function useQuery(url) {
-  const [result, setResult] = useState(null);
-  const [attempt, setAttempt] = useState(0);
-  const request = useMemo(() => ({ url, attempt }), [url, attempt]);
+  const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const activeRequest = useRef(null);
+
+  const refetch = useCallback(async () => {
+    activeRequest.current?.abort();
+    const controller = new AbortController();
+    activeRequest.current = controller;
+
+    setData(undefined);
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(url, { signal: controller.signal });
+      if (!response.ok) throw new Error('Request failed.');
+      const result = await response.json();
+      if (!controller.signal.aborted) setData(result);
+    } catch (error) {
+      if (!controller.signal.aborted) setError(error);
+    } finally {
+      if (!controller.signal.aborted) setIsLoading(false);
+    }
+  }, [url]);
 
   useEffect(() => {
-    const controller = new AbortController();
+    // Initial loading and manual retry deliberately use the same state reset.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    refetch();
+    return () => activeRequest.current?.abort();
+  }, [refetch]);
 
-    async function load() {
-      try {
-        const response = await fetch(request.url, { signal: controller.signal });
-        if (!response.ok) throw new Error('Request failed.');
-        const data = await response.json();
-        if (!controller.signal.aborted) setResult({ request, data, error: null });
-      } catch (error) {
-        if (!controller.signal.aborted) setResult({ request, data: undefined, error });
-      }
-    }
-
-    load();
-    return () => controller.abort();
-  }, [request]);
-
-  // Previous responses must not appear while a new URL or retry is loading.
-  const current = result?.request === request;
-
-  return {
-    data: current ? result.data : undefined,
-    isLoading: !current,
-    error: current ? result.error : null,
-    refetch: () => setAttempt((previous) => previous + 1),
-  };
+  return { data, isLoading, error, refetch };
 }

@@ -51,9 +51,18 @@ async (page) => {
         await expectCards(resource);
       }
       const before = { ...calls };
-      modes[failed] = 'success';
+      modes[failed] = 'hold';
+      heldRoute = null;
       await section.getByRole('button', { name: 'Try again', exact: true }).click();
+      await section.getByRole('status').waitFor();
+      check(await section.getByRole('alert').count() === 0, 'Retry clears the previous error');
+      for (const resource of Object.keys(sections).filter((key) => key !== failed)) {
+        await expectCards(resource);
+      }
+      check(heldRoute, 'Retry starts a request for its own section');
+      await heldRoute.fulfill({ json: rows[failed] });
       await expectCards(failed);
+      modes[failed] = 'success';
       for (const resource of Object.keys(sections)) {
         check(calls[resource] === before[resource] + Number(resource === failed), 'Retry must only fetch its own endpoint');
       }
