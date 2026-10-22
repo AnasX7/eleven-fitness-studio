@@ -1,9 +1,16 @@
+'use client';
+
 import { useState } from 'react';
 import { useTranslations } from '../../i18n/useTranslations';
+import { useQuery } from '../../hooks/useQuery';
 import MembershipCard from '../cards/MembershipCard';
+import QueryStatus from '../ui/QueryStatus';
 
-export default function MembershipSection({ memberships }) {
+export default function MembershipSection() {
   const t = useTranslations('MembershipSection');
+  const { data, isLoading, error, refetch } = useQuery('/api/memberships');
+  const failed = error || (!isLoading && !Array.isArray(data));
+  const memberships = Array.isArray(data) ? data : [];
   const [quantities, setQuantities] = useState({});
 
   function handleQuantityChange(planId, value) {
@@ -31,17 +38,20 @@ export default function MembershipSection({ memberships }) {
             {t('estimatorDescription')}
           </p>
         </div>
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-6 @max-[36rem]:grid-cols-1">
-          {memberships.length === 0 && <p className="text-muted">{t('empty')}</p>}
-          {memberships.map((plan) => (
-            <MembershipCard
-              key={plan.id}
-              plan={plan}
-              quantity={quantities[plan.id] ?? 1}
-              onQuantityChange={(value) => handleQuantityChange(plan.id, value)}
-            />
-          ))}
-        </div>
+        <QueryStatus isLoading={isLoading} error={failed} refetch={refetch} />
+        {!isLoading && !failed && (
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-6 @max-[36rem]:grid-cols-1">
+            {memberships.length === 0 && <p className="text-muted">{t('empty')}</p>}
+            {memberships.map((plan) => (
+              <MembershipCard
+                key={plan.id}
+                plan={plan}
+                quantity={quantities[plan.id] ?? 1}
+                onQuantityChange={(value) => handleQuantityChange(plan.id, value)}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

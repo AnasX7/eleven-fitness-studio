@@ -1,8 +1,15 @@
-import { useTranslations } from '../../i18n/useTranslations';
-import TrainerCard from '../cards/TrainerCard';
+'use client';
 
-export default function TrainersSection({ trainers }) {
+import { useTranslations } from '../../i18n/useTranslations';
+import { useQuery } from '../../hooks/useQuery';
+import TrainerCard from '../cards/TrainerCard';
+import QueryStatus from '../ui/QueryStatus';
+
+export default function TrainersSection() {
   const t = useTranslations('TrainersSection');
+  const { data, isLoading, error, refetch } = useQuery('/api/trainers');
+  const failed = error || (!isLoading && !Array.isArray(data));
+  const trainers = Array.isArray(data) ? data : [];
 
   return (
     <section
@@ -19,12 +26,15 @@ export default function TrainersSection({ trainers }) {
             {t('description')}
           </p>
         </div>
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-6 @max-[36rem]:grid-cols-1">
-          {trainers.length === 0 && <p className="text-muted">{t('empty')}</p>}
-          {trainers.map((trainer) => (
-            <TrainerCard key={trainer.id} trainer={trainer} />
-          ))}
-        </div>
+        <QueryStatus isLoading={isLoading} error={failed} refetch={refetch} />
+        {!isLoading && !failed && (
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-6 @max-[36rem]:grid-cols-1">
+            {trainers.length === 0 && <p className="text-muted">{t('empty')}</p>}
+            {trainers.map((trainer) => (
+              <TrainerCard key={trainer.id} trainer={trainer} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

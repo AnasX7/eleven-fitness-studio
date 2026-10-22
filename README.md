@@ -34,7 +34,7 @@ src/
   app/
     layout.jsx                 Language cookie, metadata, shared header/footer
     globals.css                Tailwind theme, fonts, and global styles
-    page.jsx                   Homepage and browser-side API requests
+    page.jsx                   Homepage section composition
     login/page.jsx             Login page
     signup/page.jsx            Signup page
     api/
@@ -43,6 +43,7 @@ src/
       memberships/route.js     GET membership plans
       auth/[...all]/route.js   Better Auth handlers
   components/                  Sections, cards, layout, controls, auth forms
+  hooks/useQuery.js            Independent JSON fetching, loading, errors, retry
   config/navigation.js         Shared navigation section IDs
   context/                     Existing locale context/provider
   i18n/                        Existing translation hook and locale helpers
@@ -75,7 +76,9 @@ public/assets/                 Existing images, fonts, and icons
 
 The seed contains three trainers, five classes, and three membership plans. Foreign keys protect trainer references; check constraints reject invalid categories/times and negative prices. For example, `19900` fils represents AED 199.
 
-The homepage fetches `/api/classes`, `/api/trainers`, and `/api/memberships` in parallel in the browser. Each GET handler returns an ordered JSON array using Drizzle. The classes endpoint joins trainers and includes each assigned trainer's ID, bilingual name, and image, so the schedule does not need a separate trainer lookup. The page passes the results to the sections and handles loading, error/retry, and empty states. Filters and membership estimates stay in local React state.
+Each homepage section fetches its own endpoint through the shared `useQuery(url)` hook: `/api/classes`, `/api/trainers`, or `/api/memberships`. The requests start independently when the sections mount. Each section has its own loading, error/retry, and empty states; one failed or slow endpoint does not block the others. Retry only repeats that section's request. The hook cancels obsolete requests and ignores their responses, with no shared cache or automatic retries. Sections reject non-array responses. Filters and membership estimates stay in local React state.
+
+Each GET handler returns an ordered JSON array using Drizzle. The classes endpoint joins trainers and includes each assigned trainer's ID, bilingual name, and image, so the schedule does not depend on the trainers endpoint. The homepage itself only composes the sections.
 
 Navigation and filter labels are interface translations in `messages/`. Navigation IDs are shared configuration; database seed content is only in `db/seed-data.js`. There is no `src/data` folder.
 
@@ -118,6 +121,14 @@ node --env-file=.env.test --test --test-concurrency=1
 ```
 
 Tests cover seed repeatability, preservation of other rows, database constraints, API content/errors, signup/password validation, hashing, duplicate accounts, session persistence, origin protection, logout, locale validation, and translation-key parity. Never use production for these tests.
+
+With a seeded app running at localhost:3000, the browser check reads the real API responses, then simulates slow/failed requests in the browser. It verifies independent section loading/errors, retries, malformed/empty responses, filters, estimates, language switching, responsive widths, and request cancellation on navigation:
+
+```sh
+npx --package @playwright/cli playwright-cli -s=data-check open http://localhost:3000
+npx --package @playwright/cli playwright-cli -s=data-check run-code --filename=tests/data-fetching.browser.js
+npx --package @playwright/cli playwright-cli -s=data-check close
+```
 
 The Webpack build flag avoids the local environment's Turbopack CSS-worker restriction. The esbuild override patches a legacy dependency of Drizzle tooling.
 

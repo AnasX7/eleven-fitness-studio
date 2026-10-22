@@ -71,8 +71,8 @@
     "increase": "Increase quantity"
   },
   "StudioData": {
-    "loading": "Loading studio information…",
-    "error": "We could not load studio information. Please try again.",
+    "loading": "Loading…",
+    "error": "We could not load this section. Please try again.",
     "retry": "Try again"
   },
   "Auth": {
