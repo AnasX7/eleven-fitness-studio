@@ -1,16 +1,25 @@
 import '../index.css';
 import { messages } from '../messages';
+import LocaleProvider from '../context/LocaleProvider';
+import { getRequestLocale } from '../i18n/getRequestLocale';
 
-export const metadata = {
-  title: messages.en.Metadata.title,
-  description: messages.en.Metadata.description,
-  icons: { icon: '/assets/icons/favicon.svg' },
-};
+export async function generateMetadata() {
+  const locale = await getRequestLocale();
 
-export default function RootLayout({ children }) {
+  return {
+    ...messages[locale].Metadata,
+    icons: { icon: '/assets/icons/favicon.svg' },
+  };
+}
+
+export default async function RootLayout({ children }) {
+  const locale = await getRequestLocale();
+
   return (
-    <html lang="en" dir="ltr">
-      <body id="top">{children}</body>
+    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+      <body id="top">
+        <LocaleProvider initialLocale={locale}>{children}</LocaleProvider>
+      </body>
     </html>
   );
 }
