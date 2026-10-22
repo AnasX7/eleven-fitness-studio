@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useTranslations } from '../../i18n/useTranslations';
-import { memberships } from '../../data/memberships';
 import MembershipCard from '../cards/MembershipCard';
 
-export default function MembershipSection() {
+export default function MembershipSection({ memberships }) {
   const t = useTranslations('MembershipSection');
   const [quantities, setQuantities] = useState({});
 
@@ -33,6 +32,7 @@ export default function MembershipSection() {
           </p>
         </div>
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-6 @max-[36rem]:grid-cols-1">
+          {memberships.length === 0 && <p className="text-muted">{t('empty')}</p>}
           {memberships.map((plan) => (
             <MembershipCard
               key={plan.id}

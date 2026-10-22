@@ -1,8 +1,7 @@
 import { useTranslations } from '../../i18n/useTranslations';
-import { trainers } from '../../data/trainers';
 import TrainerCard from '../cards/TrainerCard';
 
-export default function TrainersSection() {
+export default function TrainersSection({ trainers }) {
   const t = useTranslations('TrainersSection');
 
   return (
@@ -21,6 +20,7 @@ export default function TrainersSection() {
           </p>
         </div>
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-6 @max-[36rem]:grid-cols-1">
+          {trainers.length === 0 && <p className="text-muted">{t('empty')}</p>}
           {trainers.map((trainer) => (
             <TrainerCard key={trainer.id} trainer={trainer} />
           ))}

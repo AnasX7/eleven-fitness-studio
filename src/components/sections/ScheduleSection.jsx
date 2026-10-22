@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { useTranslations } from '../../i18n/useTranslations';
-import { classes } from '../../data/classes';
-import { trainers } from '../../data/trainers';
 import ClassCard from '../cards/ClassCard';
 import ClassFilter from '../ui/ClassFilter';
 import Icon from '../ui/Icon';
 
-export default function ScheduleSection() {
+export default function ScheduleSection({ classes, trainers }) {
   const t = useTranslations('ScheduleSection');
   const [category, setCategory] = useState('all');
 
@@ -41,6 +39,7 @@ export default function ScheduleSection() {
           </p>
         </div>
         <ul className="grid gap-3" role="list" aria-label={t('weeklyClasses')}>
+          {visibleClasses.length === 0 && <li className="py-6 text-muted">{t('empty')}</li>}
           {visibleClasses.map((session) => (
             <ClassCard
               key={session.id}
