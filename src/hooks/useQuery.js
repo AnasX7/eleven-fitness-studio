@@ -3,38 +3,39 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function useQuery(url) {
-  const [data, setData] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const initialState = { url, data: undefined, isLoading: true, error: null };
+  const [state, setState] = useState(initialState);
   const activeRequest = useRef(null);
 
-  const refetch = useCallback(async () => {
+  // Reset before rendering results for a different URL.
+  if (state.url !== url) setState(initialState);
+
+  const load = useCallback(() => {
     activeRequest.current?.abort();
     const controller = new AbortController();
     activeRequest.current = controller;
 
-    setData(undefined);
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch(url, { signal: controller.signal });
-      if (!response.ok) throw new Error('Request failed.');
-      const result = await response.json();
-      if (!controller.signal.aborted) setData(result);
-    } catch (error) {
-      if (!controller.signal.aborted) setError(error);
-    } finally {
-      if (!controller.signal.aborted) setIsLoading(false);
-    }
+    return fetch(url, { signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) throw new Error('Request failed.');
+        const data = await response.json();
+        if (!controller.signal.aborted) setState({ url, data, isLoading: false, error: null });
+      })
+      .catch((error) => {
+        if (!controller.signal.aborted) setState({ url, data: undefined, isLoading: false, error });
+      });
   }, [url]);
 
   useEffect(() => {
-    // Initial loading and manual retry deliberately use the same state reset.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    refetch();
+    load();
     return () => activeRequest.current?.abort();
-  }, [refetch]);
+  }, [load]);
 
+  function refetch() {
+    setState(initialState);
+    return load();
+  }
+
+  const { data, isLoading, error } = state;
   return { data, isLoading, error, refetch };
 }
