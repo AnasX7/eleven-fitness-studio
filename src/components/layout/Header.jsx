@@ -1,10 +1,14 @@
+'use client';
+
 import { useContext } from 'react';
+import Link from 'next/link';
 import { LocaleContext } from '../../context/LocaleContext';
 import { useTranslations } from '../../i18n/useTranslations';
 import { navigation } from '../../data/navigation';
 import Brand from '../ui/Brand';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
 import MobileMenu from './MobileMenu';
+import AuthControls from '../auth/AuthControls';
 
 export default function Header() {
   const t = useTranslations('Common');
@@ -18,18 +22,19 @@ export default function Header() {
           <ul className="flex items-center gap-2 text-[0.9rem] font-bold" role="list">
             {navigation.map((link) => (
               <li key={link.id}>
-                <a
+                <Link
                   className="block min-h-10 rounded-full px-4 py-2 hover:bg-accent hover:text-background focus-visible:bg-accent focus-visible:text-background motion-safe:transition-colors motion-safe:duration-250"
-                  href={`#${link.id}`}
+                  href={`/#${link.id}`}
                 >
                   {link.label[locale]}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
         </nav>
         <div className="ms-auto flex items-center gap-2 lg:gap-5">
           <LanguageSwitcher />
+          <AuthControls />
           <MobileMenu />
         </div>
       </div>

@@ -18,7 +18,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['*.config.{js,mjs}', 'src/db/**/*.js', 'src/app/api/**/*.js'],
+    files: ['*.config.{js,mjs}', 'src/db/**/*.js', 'src/app/api/**/*.js', 'src/lib/auth.js'],
     languageOptions: { globals: globals.node },
   },
   {

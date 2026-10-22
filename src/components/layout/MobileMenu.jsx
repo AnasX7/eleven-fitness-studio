@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import Link from 'next/link';
 import { LocaleContext } from '../../context/LocaleContext';
 import { useTranslations } from '../../i18n/useTranslations';
 import { navigation } from '../../data/navigation';
@@ -24,12 +25,12 @@ export default function MobileMenu() {
         <ul className="flex flex-col gap-1 text-[0.85rem] font-bold md:text-[0.9rem]" role="list">
           {navigation.map((link) => (
             <li className="min-w-0 wrap-anywhere" key={link.id}>
-              <a
+              <Link
                 className="block min-h-11 rounded-full px-4 py-2.5 hover:bg-accent hover:text-background focus-visible:bg-accent focus-visible:text-background motion-safe:transition-colors motion-safe:duration-250"
-                href={`#${link.id}`}
+                href={`/#${link.id}`}
               >
                 {link.label[locale]}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

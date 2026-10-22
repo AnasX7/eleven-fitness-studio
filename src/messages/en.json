@@ -69,5 +69,25 @@
     "loading": "Loading studio information…",
     "error": "We could not load studio information. Please try again.",
     "retry": "Try again"
+  },
+  "Auth": {
+    "login": "Sign in",
+    "signup": "Create account",
+    "logout": "Sign out",
+    "loginTitle": "Welcome back",
+    "signupTitle": "Join ELEVEN",
+    "loginDescription": "Sign in to your studio account.",
+    "signupDescription": "Create your studio account.",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "Use 8–128 characters.",
+    "pending": "Please wait…",
+    "hasAccount": "Already have an account?",
+    "newAccount": "New to ELEVEN?",
+    "invalidCredentials": "The email or password is incorrect.",
+    "accountExists": "An account with this email already exists. Sign in instead.",
+    "requestFailed": "We could not complete your request. Please try again.",
+    "retrySession": "Retry sign-in status"
   }
 }

@@ -2,6 +2,8 @@ import '../index.css';
 import { messages } from '../messages';
 import LocaleProvider from '../context/LocaleProvider';
 import { getRequestLocale } from '../i18n/getRequestLocale';
+import Header from '../components/layout/Header';
+import Footer from '../components/layout/Footer';
 
 export async function generateMetadata() {
   const locale = await getRequestLocale();
@@ -18,7 +20,11 @@ export default async function RootLayout({ children }) {
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <body id="top">
-        <LocaleProvider initialLocale={locale}>{children}</LocaleProvider>
+        <LocaleProvider initialLocale={locale}>
+          <Header />
+          {children}
+          <Footer />
+        </LocaleProvider>
       </body>
     </html>
   );

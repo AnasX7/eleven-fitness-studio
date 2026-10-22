@@ -1,4 +1,7 @@
+'use client';
+
 import { useContext } from 'react';
+import Link from 'next/link';
 import { LocaleContext } from '../../context/LocaleContext';
 import { useTranslations } from '../../i18n/useTranslations';
 import { navigation } from '../../data/navigation';
@@ -28,12 +31,12 @@ export default function Footer() {
             <ul className="flex flex-wrap gap-1 md:flex-col md:items-start" role="list">
               {navigation.map((link) => (
                 <li key={link.id}>
-                  <a
+                  <Link
                     className="inline-flex min-h-11 max-w-full items-center gap-4 rounded-full px-2.5 py-2 text-[0.85rem] font-bold hover:bg-accent hover:text-background focus-visible:bg-accent focus-visible:text-background motion-safe:transition-colors motion-safe:duration-250 md:px-3 md:text-[0.9rem]"
-                    href={`#${link.id}`}
+                    href={`/#${link.id}`}
                   >
                     {link.label[locale]}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
