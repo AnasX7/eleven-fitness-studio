@@ -2,29 +2,15 @@ import assert from 'node:assert/strict';
 import { randomBytes, randomUUID } from 'node:crypto';
 import test from 'node:test';
 import { eq } from 'drizzle-orm';
-import { getAuth } from '../src/lib/auth.js';
-import { getDb } from '../src/db/index.js';
+import { db } from '../src/db/index.js';
 import { account, user } from '../src/db/schema.js';
 import { seedStudio } from '../src/db/seed.js';
-
-test('authentication refuses missing or short server secrets', () => {
-  const previous = process.env.BETTER_AUTH_SECRET;
-  try {
-    process.env.BETTER_AUTH_SECRET = 'short';
-    assert.throws(() => getAuth(), /BETTER_AUTH_SECRET/);
-  } finally {
-    if (previous === undefined) delete process.env.BETTER_AUTH_SECRET;
-    else process.env.BETTER_AUTH_SECRET = previous;
-  }
-});
 
 test('signup, password validation, database sessions, seed safety, and logout', {
   skip: !process.env.TEST_DATABASE_URL || !process.env.BETTER_AUTH_SECRET || !process.env.BETTER_AUTH_URL,
 }, async () => {
-  const previous = process.env.DATABASE_URL;
-  process.env.DATABASE_URL = process.env.TEST_DATABASE_URL;
-  const auth = getAuth();
-  const db = getDb();
+  assert.equal(process.env.DATABASE_URL, process.env.TEST_DATABASE_URL, 'Use the disposable database as DATABASE_URL.');
+  const { auth } = await import('../src/lib/auth.js');
   const email = `test-${randomUUID()}@example.com`;
   const password = randomBytes(24).toString('base64');
   const origin = process.env.BETTER_AUTH_URL;
@@ -79,7 +65,5 @@ test('signup, password validation, database sessions, seed safety, and logout', 
   } finally {
     if (userId) await db.delete(user).where(eq(user.id, userId));
     await db.$client.end();
-    if (previous === undefined) delete process.env.DATABASE_URL;
-    else process.env.DATABASE_URL = previous;
   }
 });

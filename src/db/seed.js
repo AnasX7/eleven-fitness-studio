@@ -1,5 +1,5 @@
 import { fileURLToPath } from 'node:url';
-import { getDb } from './index.js';
+import { db } from './index.js';
 import { classes, memberships, trainers } from './schema.js';
 import { classData, membershipData, trainerData } from './seed-data.js';
 
@@ -22,7 +22,6 @@ export async function seedStudio(db) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const db = getDb();
   try {
     await seedStudio(db);
     console.log('Seeded 3 trainers, 5 classes, and 3 memberships.');

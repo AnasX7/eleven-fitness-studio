@@ -1,29 +1,23 @@
 # ELEVEN Fitness Studio
 
-Assignment 3 extends the existing React/Tailwind studio site with Next.js, Neon Postgres, Drizzle ORM, and Better Auth. English/Arabic translations, the dark/lime design, class filters, membership estimates, and local assets are preserved. All application code is JavaScript.
+The existing studio site uses Next.js App Router, React, Tailwind CSS, Drizzle ORM, PostgreSQL on Neon, and Better Auth. Application code is JavaScript. The existing English/Arabic translations and design are preserved.
 
-**Live site:** [eleven-fitness-studio.vercel.app](https://eleven-fitness-studio.vercel.app)
+## Setup
 
-**Repository:** [AnasX7/eleven-fitness-studio](https://github.com/AnasX7/eleven-fitness-studio)
+Use Node.js 24.x and npm.
 
-## Run locally
+1. Create a free project directly at [Neon](https://console.neon.tech).
+2. In that project's **Connect** dialog, enable connection pooling and copy the PostgreSQL connection string.
+3. Run `npm ci` and copy `.env.example` to `.env` if you do not already have one.
+4. Fill in these three variables locally:
 
-Use Node.js 24.x and npm. Next.js requires a server; this is not a static export.
-
-```sh
-npm ci
-cp .env.example .env
-```
-
-Fill in the ignored `.env` file:
-
-| Variable | Purpose |
+| Variable | Value |
 | --- | --- |
-| `DATABASE_URL` | Neon pooled PostgreSQL connection string, including its SSL parameters |
-| `BETTER_AUTH_SECRET` | Random secret of at least 32 characters |
-| `BETTER_AUTH_URL` | `http://localhost:3000` locally; the public site origin in production |
+| `DATABASE_URL` | Your Neon pooled connection string, including its SSL parameters |
+| `BETTER_AUTH_SECRET` | A random secret generated with `openssl rand -base64 32` |
+| `BETTER_AUTH_URL` | `http://localhost:3000` |
 
-Generate a secret locally with `openssl rand -base64 32`. Never commit it, put it in a `NEXT_PUBLIC_` variable, or paste it into an issue.
+Then create the tables, insert the studio content, and start Next.js:
 
 ```sh
 npm run db:migrate
@@ -31,112 +25,82 @@ npm run db:seed
 npm run dev
 ```
 
-Open [localhost:3000](http://localhost:3000). The seed inserts or updates three trainers, five classes, and three membership plans.
+Open [localhost:3000](http://localhost:3000). No Neon/Vercel marketplace integration is needed. Next.js reads `.env` automatically; the database commands load it locally as well. `.env*` is ignored by Git, except `.env.example`. Never put database credentials or auth secrets in `NEXT_PUBLIC_` variables.
 
-## Folder structure
+## Structure
 
 ```text
 src/
   app/
-    layout.jsx                  Cookie-based language, metadata, shared header/footer
-    page.jsx                    Homepage and browser-side API fetching
-    globals.css                 Tailwind theme, fonts, and base styles
-    login/page.jsx              Login page
-    signup/page.jsx             Signup page
+    layout.jsx                 Language cookie, metadata, shared header/footer
+    globals.css                Tailwind theme, fonts, and global styles
+    page.jsx                   Homepage and browser-side API requests
+    login/page.jsx             Login page
+    signup/page.jsx            Signup page
     api/
-      classes/route.js          GET /api/classes
-      trainers/route.js         GET /api/trainers
-      memberships/route.js      GET /api/memberships
-      auth/[...all]/route.js    Better Auth GET/POST handlers
-  components/
-    auth/                       Shared AuthForm and header AuthControls
-    layout/                     Header, Footer, MobileMenu
-    sections/                   Hero, ScheduleSection, TrainersSection, MembershipSection
-    cards/                      ClassCard, TrainerCard, MembershipCard
-    ui/                         Existing shared controls and icons
+      classes/route.js         GET classes
+      trainers/route.js        GET trainers
+      memberships/route.js     GET membership plans
+      auth/[...all]/route.js   Better Auth handlers
+  components/                  Sections, cards, layout, controls, auth forms
+  config/navigation.js         Shared navigation section IDs
+  context/                     Existing locale context/provider
+  i18n/                        Existing translation hook and locale helpers
+  messages/                    English/Arabic interface labels
   db/
-    index.js                    Shared PostgreSQL pool and Drizzle connection
-    schema.js                   Studio and authentication tables
-    seed-data.js                Original bilingual studio content
-    seed.js                     Transactional seed script
-  context/                      Existing LocaleContext and LocaleProvider
-  i18n/                         Translation hook and cookie locale helpers
-  messages/                     English and Arabic interface dictionaries
-  config/navigation.js          Shared navigation section IDs
+    index.js                   PostgreSQL pool and Drizzle instance
+    schema.js                  Database tables
+    seed-data.js               Bilingual content used by the seed script
+    seed.js                    Database seeding
   lib/
-    auth.js                     Server-side Better Auth configuration
-    auth-client.js              Browser-side Better Auth client
+    auth.js                    Better Auth configuration
+    auth-client.js             Better Auth browser client
 
-drizzle/                        Generated SQL migrations and schema snapshots
-tests/                          Node test runner checks
-public/assets/                  Existing local images, fonts, and icons
-drizzle.config.js               Migration configuration
-postcss.config.mjs              Tailwind/PostCSS integration
-vercel.json                     Next.js build/deployment configuration
-.env.example                    Safe environment placeholders
+drizzle/                       Generated SQL migrations
+tests/                         Node test runner checks
+public/assets/                 Existing images, fonts, and icons
 ```
 
-## How the data flows
+## Database and API
 
-The homepage in `src/app/page.jsx` fetches `/api/classes`, `/api/trainers`, and `/api/memberships` in parallel after mounting. Each route uses Drizzle to read its own Postgres table and returns an ordered JSON array. The results are passed to the existing sections as props. No studio content is imported into the frontend bundle.
-
-The page shows loading, error/retry, and empty states. Failed HTTP responses are checked before parsing data; requests are cancelled when the component unmounts. Class filtering and membership quantities remain local React state. Database prices are integer fils: `19900` represents AED 199. Estimates multiply the integer amount before converting it for display; the calculator does not purchase a membership.
-
-| Method | Endpoint | Response |
-| --- | --- | --- |
-| GET | `/api/classes` | Five weekly sessions, including bilingual text and trainer IDs |
-| GET | `/api/trainers` | Three bilingual trainer profiles and local image paths |
-| GET | `/api/memberships` | Plans, integer prices, bilingual features, featured status |
-| GET/POST | `/api/auth/*` | Better Auth signup, login, session, and logout endpoints |
-
-Content endpoints are public and read-only. Database failures return a generic `503` JSON error without credentials or database details. Content caching and an admin editor are outside this assignment's scope.
-
-## Database schema in plain English
-
-| Table | What a row represents |
+| Table | Purpose |
 | --- | --- |
-| `trainers` | One coach, with bilingual profile text and an image |
-| `classes` | One weekly class session, linked to an existing trainer |
-| `memberships` | One membership plan, its price in fils, and its features |
-| `user` | One registered person's name, unique email, and account timestamps |
-| `account` | A login method belonging to a user; email/password credentials contain a password hash |
-| `session` | A user's active login token and expiry; the browser's session cookie identifies this record |
-| `verification` | Better Auth's verification records when a configured flow needs them |
+| `trainers` | Bilingual coach profiles and image paths |
+| `classes` | Weekly sessions, each linked to an existing trainer |
+| `memberships` | Bilingual plans/features and prices stored as integer fils |
+| `user` | Registered people's names and unique emails |
+| `account` | Login credentials, with passwords hashed by Better Auth |
+| `session` | Login tokens, users, and expiry times |
+| `verification` | Better Auth's verification records |
 
-Bilingual content uses JSONB values such as `{ "en": "Maya Rao", "ar": "مايا راو" }`. Separate columns hold IDs, trainer references, categories, prices, and display order. Foreign keys prevent classes referencing missing trainers and prevent deleting an assigned trainer. Check constraints reject invalid categories, invalid 24-hour times, and negative prices.
+The seed contains three trainers, five classes, and three membership plans. Foreign keys protect trainer references; check constraints reject invalid categories/times and negative prices. For example, `19900` fils represents AED 199.
 
-Better Auth owns credential validation, password hashing, session cookies, and session expiry. The application never hashes passwords itself or stores login tokens in localStorage. `AuthControls` reads the session through Better Auth and shows the signed-in name and Sign out button. Signup signs in the new account; login survives a full page refresh. Logout revokes the session. Email verification, password reset emails, social login, payments, and admin roles are not configured.
+The homepage fetches `/api/classes`, `/api/trainers`, and `/api/memberships` in parallel in the browser. Each GET handler queries its own table with Drizzle and returns an ordered JSON array. The page passes those results to the sections and handles loading, error/retry, and empty states. Filters and membership estimates stay in local React state.
 
-## Language without next-intl
+Navigation and filter labels are interface translations in `messages/`. Navigation IDs are shared configuration; database seed content is only in `db/seed-data.js`. There is no `src/data` folder.
 
-The existing `useTranslations(namespace)` hook reads the English/Arabic dictionaries through `LocaleContext`. Navigation and class-filter labels also live in those dictionaries; the shared navigation configuration contains section IDs only. Routes stay `/`, `/login`, and `/signup`.
+## Authentication and language
 
-The root layout reads a `locale` cookie, accepts only `en` or `ar`, and defaults to English. It renders the correct language, text direction, and metadata, then passes the same initial locale into the client provider. Saved Arabic therefore renders correctly even before JavaScript runs.
+Better Auth handles signup, login, password hashing, sessions, and logout through `/api/auth/*`. `lib/auth.js` exports its configuration directly; Better Auth reads `BETTER_AUTH_SECRET` and `BETTER_AUTH_URL` and validates its own configuration. The header uses `authClient.useSession()` to display signed-in state. Sessions survive refresh and are revoked on logout.
 
-The language button updates state immediately, saves a one-year cookie, and refreshes server output. The cookie uses `Path=/`, `SameSite=Lax`, and `Secure` on HTTPS. It is browser-accessible because it stores a preference, not an authentication credential. It replaces the old localStorage preference. Switching language preserves current filters and membership quantities; quantities reset on a full reload.
+The existing translation hook remains in use without next-intl. The root layout reads the `locale` cookie and supplies the same initial language to the provider, avoiding an English flash for saved Arabic. The language button updates state, saves the cookie, and refreshes server metadata. Only `en` and `ar` are accepted. The cookie lasts a year, applies to `/`, uses `SameSite=Lax`, and is Secure on HTTPS. Auth uses a separate session cookie.
 
-Reading the language cookie makes the layout render per request. Studio content still loads through the GET endpoints in the browser. Better Auth's session cookie is separate from the language cookie.
+## Content changes
 
-## Content updates and migrations
-
-Edit `src/db/seed-data.js`, including both translations, then run:
+Edit both languages in `src/db/seed-data.js`, then run:
 
 ```sh
 npm run db:seed
 ```
 
-The seed uses stable IDs and one transaction. It inserts new IDs and updates existing IDs, without deleting other rows or modifying users/sessions. Removing an item from the seed file does not delete its database row. Preserve trainer references when changing classes.
-
-When changing table definitions:
+Seeding inserts/updates stable IDs inside a transaction. It does not modify users or delete rows removed from the seed file. For schema changes, update `schema.js`, generate a migration, review its SQL, and apply it:
 
 ```sh
 npm run db:generate
 npm run db:migrate
 ```
 
-Review and commit the generated SQL in `drizzle/`. Apply migrations before deploying code that depends on them. `npm run db:studio` opens Drizzle's table browser for local development; it is not a public admin dashboard.
-
-## Validation
+## Checks
 
 ```sh
 npm run lint
@@ -145,7 +109,7 @@ npm run build
 npm start
 ```
 
-`npm test` runs unit checks and safely skips database integration tests when no test database is configured. For all eight checks, use a separate disposable Postgres database. Put its connection string in both `DATABASE_URL` and `TEST_DATABASE_URL` in an ignored `.env.test`, alongside a random `BETTER_AUTH_SECRET` and `BETTER_AUTH_URL=http://localhost:3000`. Then run:
+Database tests are skipped without test credentials. For all seven checks, use a separate disposable database and put its URL in both `DATABASE_URL` and `TEST_DATABASE_URL` in an ignored `.env.test`, with `BETTER_AUTH_SECRET` and `BETTER_AUTH_URL=http://localhost:3000`.
 
 ```sh
 node --env-file=.env.test node_modules/drizzle-kit/bin.cjs migrate
@@ -153,30 +117,18 @@ node --env-file=.env.test src/db/seed.js
 node --env-file=.env.test --test --test-concurrency=1
 ```
 
-Do not point integration tests at production. They exercise seed writes and create/delete temporary accounts. Checks cover seed repeatability, preservation of other rows, foreign keys, price constraints, ordered bilingual API output, safe API errors, signup validation, password hashing, duplicate accounts, invalid credentials, origin protection, sessions, logout, supported locale values, and translation-key parity.
+Tests cover seed repeatability, preservation of other rows, database constraints, API content/errors, signup/password validation, hashing, duplicate accounts, session persistence, origin protection, logout, locale validation, and translation-key parity. Never use production for these tests.
 
-Before deployment, browser checks covered filtering, independent membership estimates, API failure/retry and empty states, signup/login/logout, refresh persistence, Arabic before JavaScript, invalid-cookie fallback, state preservation during language changes, and overflow at 375px, 768px, and 1440px.
-
-The public production site was also checked through anonymous HTTP requests and a fresh browser session: all three APIs returned the seeded rows; signup/login/logout and refresh persistence worked; the session cookie was Secure and HttpOnly; language persistence, filters, estimates, navigation, and responsive widths passed. Temporary production test accounts were removed afterward.
-
-The build uses Next.js's supported Webpack option because Turbopack's CSS worker was blocked in the local execution environment. The targeted esbuild override patches a vulnerable legacy dependency of Drizzle tooling; clean installation, migration generation, and the production build were verified with it.
+The Webpack build flag avoids the local environment's Turbopack CSS-worker restriction. The esbuild override patches a legacy dependency of Drizzle tooling.
 
 ## Deployment
 
-The existing `eleven-fitness-studio` Vercel project hosts both Next.js pages and API routes. Its Neon integration provisions the Postgres database on the free plan in `iad1`. Neon's separate authentication feature is disabled because this app uses Better Auth.
+Create and manage Neon directly. Set `DATABASE_URL` from that project, a production auth secret, and the public `BETTER_AUTH_URL` in the hosting provider's environment settings. Apply migrations and seed the intended database before deploying. Vercel can host the Next.js app and its API together; `vercel.json` only selects the Next.js framework for the existing project.
 
-Configure production `DATABASE_URL`, a production-only `BETTER_AUTH_SECRET`, and `BETTER_AUTH_URL=https://eleven-fitness-studio.vercel.app` in Vercel. Development uses its own auth secret and localhost URL. Preview deployments need their own environment configuration before their database/auth features can be used.
+The previous live deployment still uses the earlier Vercel-managed database. This cleanup is local; switching that deployment to your standalone Neon project requires your new credentials and a redeploy. The old database has not been deleted.
 
-After applying database migrations and seeding the intended content:
+Admin editing, caching, payments, social login, and email verification/reset flows are outside the agreed scope.
 
-```sh
-npx vercel --prod
-```
+## Assets
 
-`vercel.json` selects Next.js, runs `npm ci` and `npm run build`, and uses `.next` output. There is no separate Express server or Railway deployment.
-
-`.env*`, `.vercel/`, `.next/`, and `node_modules/` are git-ignored; `.env.example` is intentionally tracked. Local Vercel linking may create an ignored `.env.local` with an OIDC token. Never commit generated environment files.
-
-## Assets and earlier work
-
-The existing fictional studio photography, local Thmanyah Sans fonts, and [Hugeicons Stroke Rounded](https://hugeicons.com/icons/stroke-rounded) icons are preserved. The upstream icon MIT license remains at `public/assets/icons/LICENSE.txt`. `legacy/html-css` preserves the original HTML/CSS implementation; Week 2's React/Tailwind work remains in Git history.
+Existing fictional studio photography and local Thmanyah Sans fonts are preserved. Icons are [Hugeicons Stroke Rounded](https://hugeicons.com/icons/stroke-rounded); the MIT license is at `public/assets/icons/LICENSE.txt`. Earlier HTML/CSS and React/Vite implementations remain in Git history.

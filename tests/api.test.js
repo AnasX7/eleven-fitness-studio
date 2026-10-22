@@ -1,33 +1,27 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { db } from '../src/db/index.js';
 import { GET as getClasses } from '../src/app/api/classes/route.js';
 import { GET as getTrainers } from '../src/app/api/trainers/route.js';
 import { GET as getMemberships } from '../src/app/api/memberships/route.js';
 
-test('unconfigured APIs return a safe service error', async (t) => {
-  const previous = process.env.DATABASE_URL;
-  delete process.env.DATABASE_URL;
+test('database errors return a safe API response', async (t) => {
+  t.mock.method(db, 'select', () => { throw new Error('Private database details'); });
   t.mock.method(console, 'error', () => {});
 
-  try {
-    for (const handler of [getClasses, getTrainers, getMemberships]) {
-      const response = await handler();
-      assert.equal(response.status, 503);
-      const body = await response.json();
-      assert.match(body.error, /^Unable to load/);
-      assert.ok(!JSON.stringify(body).includes('DATABASE_URL'));
-    }
-  } finally {
-    if (previous === undefined) delete process.env.DATABASE_URL;
-    else process.env.DATABASE_URL = previous;
+  for (const handler of [getClasses, getTrainers, getMemberships]) {
+    const response = await handler();
+    assert.equal(response.status, 503);
+    const body = await response.json();
+    assert.match(body.error, /^Unable to load/);
+    assert.ok(!JSON.stringify(body).includes('Private database details'));
   }
 });
 
 test('resource APIs return ordered, bilingual database content', {
   skip: !process.env.TEST_DATABASE_URL,
 }, async () => {
-  const previous = process.env.DATABASE_URL;
-  process.env.DATABASE_URL = process.env.TEST_DATABASE_URL;
+  assert.equal(process.env.DATABASE_URL, process.env.TEST_DATABASE_URL, 'Use the disposable database as DATABASE_URL.');
 
   try {
     const classes = await (await getClasses()).json();
@@ -42,8 +36,6 @@ test('resource APIs return ordered, bilingual database content', {
     assert.ok(classes.every((row) => row.title.en && row.title.ar));
     assert.ok(classes.every((row) => trainers.some((trainer) => trainer.id === row.trainerId)));
   } finally {
-    await globalThis.studioDb?.$client.end();
-    if (previous === undefined) delete process.env.DATABASE_URL;
-    else process.env.DATABASE_URL = previous;
+    await db.$client.end();
   }
 });
