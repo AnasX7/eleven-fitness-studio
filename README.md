@@ -75,7 +75,7 @@ public/assets/                 Existing images, fonts, and icons
 
 The seed contains three trainers, five classes, and three membership plans. Foreign keys protect trainer references; check constraints reject invalid categories/times and negative prices. For example, `19900` fils represents AED 199.
 
-The homepage fetches `/api/classes`, `/api/trainers`, and `/api/memberships` in parallel in the browser. Each GET handler queries its own table with Drizzle and returns an ordered JSON array. The page passes those results to the sections and handles loading, error/retry, and empty states. Filters and membership estimates stay in local React state.
+The homepage fetches `/api/classes`, `/api/trainers`, and `/api/memberships` in parallel in the browser. Each GET handler returns an ordered JSON array using Drizzle. The classes endpoint joins trainers and includes each assigned trainer's ID, bilingual name, and image, so the schedule does not need a separate trainer lookup. The page passes the results to the sections and handles loading, error/retry, and empty states. Filters and membership estimates stay in local React state.
 
 Navigation and filter labels are interface translations in `messages/`. Navigation IDs are shared configuration; database seed content is only in `db/seed-data.js`. There is no `src/data` folder.
 

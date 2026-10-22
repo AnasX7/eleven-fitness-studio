@@ -61,7 +61,7 @@ export default function HomePage() {
       )}
       {studio && (
         <>
-          <ScheduleSection classes={studio.classes} trainers={studio.trainers} />
+          <ScheduleSection classes={studio.classes} />
           <TrainersSection trainers={studio.trainers} />
           <MembershipSection memberships={studio.memberships} />
         </>

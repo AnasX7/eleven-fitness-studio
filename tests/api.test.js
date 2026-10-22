@@ -35,6 +35,10 @@ test('resource APIs return ordered, bilingual database content', {
     assert.deepEqual(memberships.map((row) => row.priceFils), [19900, 34900, 49900]);
     assert.ok(classes.every((row) => row.title.en && row.title.ar));
     assert.ok(classes.every((row) => trainers.some((trainer) => trainer.id === row.trainerId)));
+    for (const row of classes) {
+      const trainer = trainers.find((trainer) => trainer.id === row.trainerId);
+      assert.deepEqual(row.trainer, { id: trainer.id, name: trainer.name, image: trainer.image });
+    }
   } finally {
     await db.$client.end();
   }

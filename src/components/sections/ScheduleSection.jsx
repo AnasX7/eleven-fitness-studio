@@ -4,7 +4,7 @@ import ClassCard from '../cards/ClassCard';
 import ClassFilter from '../ui/ClassFilter';
 import Icon from '../ui/Icon';
 
-export default function ScheduleSection({ classes, trainers }) {
+export default function ScheduleSection({ classes }) {
   const t = useTranslations('ScheduleSection');
   const [category, setCategory] = useState('all');
 
@@ -44,7 +44,7 @@ export default function ScheduleSection({ classes, trainers }) {
             <ClassCard
               key={session.id}
               session={session}
-              trainer={trainers.find((trainer) => trainer.id === session.trainerId)}
+              trainer={session.trainer}
             />
           ))}
         </ul>
