@@ -39,7 +39,8 @@ Open [localhost:3000](http://localhost:3000). The seed inserts or updates three 
 src/
   app/
     layout.jsx                  Cookie-based language, metadata, shared header/footer
-    page.jsx                    Homepage entry
+    page.jsx                    Homepage and browser-side API fetching
+    globals.css                 Tailwind theme, fonts, and base styles
     login/page.jsx              Login page
     signup/page.jsx             Signup page
     api/
@@ -47,10 +48,9 @@ src/
       trainers/route.js         GET /api/trainers
       memberships/route.js      GET /api/memberships
       auth/[...all]/route.js    Better Auth GET/POST handlers
-  App.jsx                       Existing homepage composition
   components/
     auth/                       Shared AuthForm and header AuthControls
-    layout/                     Header, Footer, Main, MobileMenu
+    layout/                     Header, Footer, MobileMenu
     sections/                   Hero, ScheduleSection, TrainersSection, MembershipSection
     cards/                      ClassCard, TrainerCard, MembershipCard
     ui/                         Existing shared controls and icons
@@ -62,11 +62,10 @@ src/
   context/                      Existing LocaleContext and LocaleProvider
   i18n/                         Translation hook and cookie locale helpers
   messages/                     English and Arabic interface dictionaries
-  data/                         Static navigation and category options
+  config/navigation.js          Shared navigation section IDs
   lib/
     auth.js                     Server-side Better Auth configuration
     auth-client.js              Browser-side Better Auth client
-  index.css                     Tailwind theme, fonts, and base styles
 
 drizzle/                        Generated SQL migrations and schema snapshots
 tests/                          Node test runner checks
@@ -79,7 +78,7 @@ vercel.json                     Next.js build/deployment configuration
 
 ## How the data flows
 
-The homepage's `Main` component fetches `/api/classes`, `/api/trainers`, and `/api/memberships` in parallel after mounting. Each route uses Drizzle to read its own Postgres table and returns an ordered JSON array. The results are passed to the existing sections as props. No studio content is imported into the frontend bundle.
+The homepage in `src/app/page.jsx` fetches `/api/classes`, `/api/trainers`, and `/api/memberships` in parallel after mounting. Each route uses Drizzle to read its own Postgres table and returns an ordered JSON array. The results are passed to the existing sections as props. No studio content is imported into the frontend bundle.
 
 The page shows loading, error/retry, and empty states. Failed HTTP responses are checked before parsing data; requests are cancelled when the component unmounts. Class filtering and membership quantities remain local React state. Database prices are integer fils: `19900` represents AED 199. Estimates multiply the integer amount before converting it for display; the calculator does not purchase a membership.
 
@@ -110,7 +109,7 @@ Better Auth owns credential validation, password hashing, session cookies, and s
 
 ## Language without next-intl
 
-The existing `useTranslations(namespace)` hook reads the existing English/Arabic dictionaries through `LocaleContext`. Routes stay `/`, `/login`, and `/signup`.
+The existing `useTranslations(namespace)` hook reads the English/Arabic dictionaries through `LocaleContext`. Navigation and class-filter labels also live in those dictionaries; the shared navigation configuration contains section IDs only. Routes stay `/`, `/login`, and `/signup`.
 
 The root layout reads a `locale` cookie, accepts only `en` or `ar`, and defaults to English. It renders the correct language, text direction, and metadata, then passes the same initial locale into the client provider. Saved Arabic therefore renders correctly even before JavaScript runs.
 

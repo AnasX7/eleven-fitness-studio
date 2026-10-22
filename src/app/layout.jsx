@@ -1,4 +1,4 @@
-import '../index.css';
+import './globals.css';
 import { messages } from '../messages';
 import LocaleProvider from '../context/LocaleProvider';
 import { getRequestLocale } from '../i18n/getRequestLocale';

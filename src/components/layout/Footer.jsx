@@ -1,15 +1,12 @@
 'use client';
 
-import { useContext } from 'react';
 import Link from 'next/link';
-import { LocaleContext } from '../../context/LocaleContext';
 import { useTranslations } from '../../i18n/useTranslations';
-import { navigation } from '../../data/navigation';
+import { navigation } from '../../config/navigation';
 import Brand from '../ui/Brand';
 
 export default function Footer() {
   const t = useTranslations();
-  const { locale } = useContext(LocaleContext);
 
   return (
     <footer className="overflow-clip border-t border-border bg-surface">
@@ -29,13 +26,13 @@ export default function Footer() {
               {t('Footer.explore')}
             </h3>
             <ul className="flex flex-wrap gap-1 md:flex-col md:items-start" role="list">
-              {navigation.map((link) => (
-                <li key={link.id}>
+              {navigation.map((id) => (
+                <li key={id}>
                   <Link
                     className="inline-flex min-h-11 max-w-full items-center gap-4 rounded-full px-2.5 py-2 text-[0.85rem] font-bold hover:bg-accent hover:text-background focus-visible:bg-accent focus-visible:text-background motion-safe:transition-colors motion-safe:duration-250 md:px-3 md:text-[0.9rem]"
-                    href={`/#${link.id}`}
+                    href={`/#${id}`}
                   >
-                    {link.label[locale]}
+                    {t(`Navigation.${id}`)}
                   </Link>
                 </li>
               ))}

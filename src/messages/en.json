@@ -36,7 +36,12 @@
     "empty": "No classes are scheduled in this category."
   },
   "ClassFilter": {
-    "label": "Filter classes by category"
+    "label": "Filter classes by category",
+    "all": "All",
+    "strength": "Strength",
+    "conditioning": "Conditioning",
+    "mobility": "Mobility",
+    "mixed": "Mixed training"
   },
   "TrainersSection": {
     "title": "Trainer Bios",
@@ -89,5 +94,10 @@
     "accountExists": "An account with this email already exists. Sign in instead.",
     "requestFailed": "We could not complete your request. Please try again.",
     "retrySession": "Retry sign-in status"
+  },
+  "Navigation": {
+    "schedule": "Schedule",
+    "trainers": "Trainers",
+    "membership": "Membership"
   }
 }
