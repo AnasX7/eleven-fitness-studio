@@ -1,97 +1,145 @@
 # ELEVEN Fitness Studio
 
-Week 2 continues the original studio website with Vite, React (JavaScript) and Tailwind CSS. The existing English and Arabic copy, five weekly classes, three trainers, membership prices, local photography and dark/lime design are preserved. All content stays local; there is no backend.
+The existing studio site uses Next.js App Router, React, Tailwind CSS, Drizzle ORM, PostgreSQL on Neon, and Better Auth. Application code is JavaScript. The existing English/Arabic translations and design are preserved.
 
-## Run locally
+## Setup
 
-Use Node.js 20.19+ (20.x), 22.13+ (22.x), or 24+ for Vite and ESLint.
+Use Node.js 24.x and npm.
+
+1. Create a free project directly at [Neon](https://console.neon.tech).
+2. In that project's **Connect** dialog, enable connection pooling and copy the PostgreSQL connection string.
+3. Run `npm ci` and copy `.env.example` to `.env` if you do not already have one.
+4. Fill in these three variables locally:
+
+| Variable | Value |
+| --- | --- |
+| `DATABASE_URL` | Your Neon pooled connection string, including its SSL parameters |
+| `BETTER_AUTH_SECRET` | A random secret generated with `openssl rand -base64 32` |
+| `BETTER_AUTH_URL` | `http://localhost:3000` |
+
+Then create the tables, insert the studio content, and start Next.js:
 
 ```sh
-npm install
+npm run db:migrate
+npm run db:seed
 npm run dev
-npm run lint
-npm run build
-npm run preview
 ```
 
-Open `/` or `/index.html`. One HTML entry mounts the app in either language. `LocaleProvider` initializes `locale` from the `localStorage` key `locale`, accepting `en` or `ar` and defaulting to English. It provides `{ locale, setLocale }` through `LocaleContext`. The language button updates state without reloading or changing the URL, so the current filter and membership quantities remain. The preference is saved for future visits; if browser storage is unavailable, switching still works for the current visit.
+Open [localhost:3000](http://localhost:3000). No Neon/Vercel marketplace integration is needed. Next.js reads `.env` automatically; the database commands load it locally as well. `.env*` is ignored by Git, except `.env.example`. Never put database credentials or auth secrets in `NEXT_PUBLIC_` variables.
 
 ## Structure
 
 ```text
-index.html                Shared HTML entry with English defaults
-vite.config.js            React and Tailwind plugins
-eslint.config.js          JavaScript, React Hooks and Fast Refresh lint rules
 src/
-  main.jsx                React mount and locale provider
-  App.jsx                 Header, Main and Footer composition
-  index.css               Tailwind import, theme, local fonts and base rules
-  context/LocaleContext.js App-wide locale context
-  context/LocaleProvider.jsx Locale state, persistence and document metadata
-  data/
-    categories.js           Class filter options
-    classes.js              Weekly class sessions
-    trainers.js             Trainer profiles
-    memberships.js          Membership plans, prices and features
-    navigation.js           Header and footer links
-  messages/en.json          English interface messages, grouped by namespace
-  messages/ar.json          Arabic interface messages, grouped by namespace
-  messages/index.js         Exports the message dictionaries by locale
-  i18n/useTranslations.js   Local hook for scoped or root static-string lookup
-  components/
-    layout/                 Header, Main, Footer and MobileMenu
-    sections/               Hero, ScheduleSection, TrainersSection, MembershipSection
-    cards/                  ClassCard, TrainerCard, MembershipCard
-    ui/                     Brand, Icon, ArrowIcon, LanguageSwitcher, ClassFilter, QuantityStepper
-public/assets/             Original local images, fonts, icons and license
+  app/
+    layout.jsx                 Language cookie, metadata, shared header/footer
+    globals.css                Tailwind theme, fonts, and global styles
+    page.jsx                   Homepage section composition
+    login/page.jsx             Login page
+    signup/page.jsx            Signup page
+    api/
+      classes/route.js         GET classes
+      trainers/route.js        GET trainers
+      memberships/route.js     GET membership plans
+      auth/[...all]/route.js   Better Auth handlers
+  components/                  Sections, cards, layout, controls, auth forms
+  hooks/useQuery.js            Independent JSON fetching, loading, errors, retry
+  config/navigation.js         Shared navigation section IDs
+  context/                     Existing locale context/provider
+  i18n/                        Existing translation hook and locale helpers
+  messages/                    English/Arabic interface labels
+  db/
+    index.js                   PostgreSQL pool and Drizzle instance
+    schema.js                  Database tables
+    seed-data.js               Bilingual content used by the seed script
+    seed.js                    Database seeding
+  lib/
+    auth.js                    Better Auth configuration
+    auth-client.js             Better Auth browser client
+
+drizzle/                       Generated SQL migrations
+tests/                         Node test runner checks
+public/assets/                 Existing images, fonts, and icons
 ```
 
-`Header` composes the brand, desktop navigation, `LanguageSwitcher` and `MobileMenu`. The mobile menu retains native `<details>` behaviour.
+## Database and API
 
-`Main` composes `Hero`, `ScheduleSection`, `TrainersSection` and `MembershipSection` inside one semantic main element. Each section owns its markup and reads its own message namespace. Repeated content comes from arrays of objects and is rendered with `map` and stable IDs. Monday and Thursday's Strength classes have separate session IDs.
+| Table | Purpose |
+| --- | --- |
+| `trainers` | Bilingual coach profiles and image paths |
+| `classes` | Weekly sessions, each linked to an existing trainer |
+| `memberships` | Bilingual plans/features and prices stored as integer fils |
+| `user` | Registered people's names and unique emails |
+| `account` | Login credentials, with passwords hashed by Better Auth |
+| `session` | Login tokens, users, and expiry times |
+| `verification` | Better Auth's verification records |
 
-## Interactions and assessment concepts
+The seed contains three trainers, five classes, and three membership plans. Foreign keys protect trainer references; check constraints reject invalid categories/times and negative prices. For example, `19900` fils represents AED 199.
 
-- `ScheduleSection` owns `category` with `useState`. It passes `value` and the named `handleCategoryChange` callback to the controlled `ClassFilter`. Each filter button passes `option.id` directly to `handleCategoryClick`, which requests a change through `onChange`. The `data-category` attribute remains available for browser checks. `filter` derives the visible classes without changing the source array or storing a second list in state.
-- `MembershipSection` owns `quantities` with `useState`, keyed by membership ID. Each plan starts at one person. A functional state update copies the previous object and changes only that plan's quantity.
-- `MembershipCard` receives its quantity and change callback, then passes them to the reusable `QuantityStepper` as `value` and `onChange`. The stepper has no internal state; its buttons request `value - 1` or `value + 1`. Decrease is disabled at one person.
-- Each card derives its estimated monthly total as `plan.price * quantity`; the total is not stored in state. Original prices remain AED 199, 349 and 499 per person, with no discounts applied. Quantities stay independent and survive filtering and language changes; they reset on reload. This is a local cost estimate, with no booking or checkout.
-- `LanguageSwitcher` reads `locale` and `setLocale` from context and calls the setter through `handleLocaleChange`. It does not create its own language state.
-- `LocaleProvider` owns the language with `useState`. `useLayoutEffect` synchronizes the document language, direction, title and description before paint. `useEffect` persists the preference to `localStorage`; only the language is persisted.
-- Both languages use the same session IDs and category values. UI messages live in English and Arabic JSON dictionaries, grouped by component namespace with shared labels in `Common`. `LocaleContext` provides the current locale and its setter. Consumers read `{ locale }` with `useContext`. Components call the local `useTranslations(namespace)` hook to obtain `t`, then render a string with `t(key)`. Components needing multiple namespaces call `useTranslations()` once and use qualified keys such as `t('Footer.description')` and `t('Common.brand')`. RTL utilities and logical spacing preserve the Arabic layout.
-- Unprefixed Tailwind classes describe the phone layout. `md:` and `lg:` adapt the existing tablet and desktop layout. Motion is enabled only with `motion-safe:`.
+Each homepage section fetches its own endpoint through the shared `useQuery(url)` hook: `/api/classes`, `/api/trainers`, or `/api/memberships`. The requests start independently when the sections mount. Each section has its own loading, error/retry, and empty states; one failed or slow endpoint does not block the others. Retry only repeats that section's request. The hook cancels obsolete requests and ignores their responses, with no shared cache or automatic retries. Sections reject non-array responses. Filters and membership estimates stay in local React state.
 
-The local translation hook follows next-intl’s namespace and `useTranslations`/`t` naming. It supports static strings only; it does not implement interpolation, pluralization or formatting, and next-intl is not installed. Studio content is organized into separate JavaScript files in `src/data`, each exporting a named array. Components import the arrays they need directly.
+Each GET handler returns an ordered JSON array using Drizzle. The classes endpoint joins trainers and includes each assigned trainer's ID, bilingual name, and image, so the schedule does not depend on the trainers endpoint. The homepage itself only composes the sections.
 
-This implementation uses the instructor example to understand React patterns, while retaining this repository's own design, assets and content.
+Navigation and filter labels are interface translations in `messages/`. Navigation IDs are shared configuration; database seed content is only in `db/seed-data.js`. There is no `src/data` folder.
 
-## Validation
+## Authentication and language
 
-`npm run lint` checks JavaScript and JSX, React Hooks usage and Fast Refresh exports, failing on any warnings. Browser code uses browser globals; configuration files use Node globals. Generated build output is ignored. ESLint is development tooling; no runtime or testing library was added.
+Better Auth handles signup, login, password hashing, sessions, and logout through `/api/auth/*`. `lib/auth.js` exports its configuration directly; Better Auth reads `BETTER_AUTH_SECRET` and `BETTER_AUTH_URL` and validates its own configuration. The header uses `authClient.useSession()` to display signed-in state. Sessions survive refresh and are revoked on logout.
 
-`npm run build` produces a single `index.html`; check both languages through `npm run preview` as well as the dev server. Use the header language button to switch. The HTML shell has English metadata; JavaScript applies the saved locale and its metadata when the app mounts.
+The existing translation hook remains in use without next-intl. The root layout reads the `locale` cookie and supplies the same initial language to the provider, avoiding an English flash for saved Arabic. The language button updates state, saves the cookie, and refreshes server metadata. Only `en` and `ar` are accepted. The cookie lasts a year, applies to `/`, uses `SameSite=Lax`, and is Secure on HTTPS. Auth uses a separate session cookie.
 
-Check both languages at **375px, 768px and 1440px**:
+## Content changes
 
-1. All shows five classes. Strength shows two; Conditioning, Mobility and Mixed training each show one. All restores the original order. Filter buttons expose their selected state with `aria-pressed`.
-2. Every membership starts at one person with its original price as the estimate and its decrease button disabled. Increase Regular to two: its estimate becomes AED 698; Starter and All In stay at one. Change another plan and decrease Regular: the other quantity remains unchanged. Change a class filter or switch language: quantities remain, with localized labels and numbers. Reload: quantities reset to one while the language preference remains.
-3. Use Tab, Enter and Space to operate links, filters, quantity steppers and the native mobile menu. Focus must remain visible. Trainer and membership links must reach their target anchors. The language button must work with Enter and Space, preserve focus, and leave the URL unchanged.
-4. Check the header, hero crop/overlay, schedule, trainer cards, featured membership and footer against the original design. Images and local font weights must load. Confirm Arabic text, numerals, RTL spacing and arrow direction.
-5. Confirm no horizontal scrolling, including with the menu open and enlarged text. In the browser console, run:
+Edit both languages in `src/db/seed-data.js`, then run:
 
-   ```js
-   console.assert(document.documentElement.scrollWidth <= document.documentElement.clientWidth);
-   ```
+```sh
+npm run db:seed
+```
 
-6. With reduced motion enabled, smooth scrolling and optional transitions should stop. Check the console for errors and missing assets.
-7. With no saved preference or an invalid `locale` value, the app starts in English. Save Arabic and reload or reopen the site: it starts in Arabic with RTL direction and translated metadata. Block storage reads and writes: switching still works without errors.
+Seeding inserts/updates stable IDs inside a transaction. It does not modify users or delete rows removed from the seed file. For schema changes, update `schema.js`, generate a migration, review its SQL, and apply it:
 
-During migration, the production build, browser assertions and screenshots were checked at each meaningful stage. Browser automation uses externally available tooling rather than adding a library to this project.
+```sh
+npm run db:generate
+npm run db:migrate
+```
 
-## Branches and assets
+## Checks
 
-- `legacy/html-css` preserves the original implementation.
-- `feat/react-tailwind` contains the Week 2 migration.
-- `main` contains the merged Week 2 implementation.
+```sh
+npm run lint
+npm test
+npm run build
+npm start
+```
 
-Typography: local Thmanyah Sans. Icons: [Hugeicons Stroke Rounded](https://hugeicons.com/icons/stroke-rounded), with the upstream [MIT license](public/assets/icons/LICENSE.txt). Images: generated fictional studio photography.
+Database tests are skipped without test credentials. For all seven checks, use a separate disposable database and put its URL in both `DATABASE_URL` and `TEST_DATABASE_URL` in an ignored `.env.test`, with `BETTER_AUTH_SECRET` and `BETTER_AUTH_URL=http://localhost:3000`.
+
+```sh
+node --env-file=.env.test node_modules/drizzle-kit/bin.cjs migrate
+node --env-file=.env.test src/db/seed.js
+node --env-file=.env.test --test --test-concurrency=1
+```
+
+Tests cover seed repeatability, preservation of other rows, database constraints, API content/errors, signup/password validation, hashing, duplicate accounts, session persistence, origin protection, logout, locale validation, and translation-key parity. Never use production for these tests.
+
+With a seeded app running at localhost:3000, the browser check reads the real API responses, then simulates slow/failed requests in the browser. It verifies independent section loading/errors, retries, malformed/empty responses, filters, estimates, language switching, responsive widths, and request cancellation on navigation:
+
+```sh
+npx --package @playwright/cli playwright-cli -s=data-check open http://localhost:3000
+npx --package @playwright/cli playwright-cli -s=data-check run-code --filename=tests/data-fetching.browser.js
+npx --package @playwright/cli playwright-cli -s=data-check close
+```
+
+The Webpack build flag avoids the local environment's Turbopack CSS-worker restriction. The esbuild override patches a legacy dependency of Drizzle tooling.
+
+## Deployment
+
+Create and manage Neon directly. Set `DATABASE_URL` from that project, a production auth secret, and the public `BETTER_AUTH_URL` in the hosting provider's environment settings. Apply migrations and seed the intended database before deploying. Vercel can host the Next.js app and its API together; `vercel.json` only selects the Next.js framework for the existing project.
+
+The previous live deployment still uses the earlier Vercel-managed database. This cleanup is local; switching that deployment to your standalone Neon project requires your new credentials and a redeploy. The old database has not been deleted.
+
+Admin editing, caching, payments, social login, and email verification/reset flows are outside the agreed scope.
+
+## Assets
+
+Existing fictional studio photography and local Thmanyah Sans fonts are preserved. Icons are [Hugeicons Stroke Rounded](https://hugeicons.com/icons/stroke-rounded); the MIT license is at `public/assets/icons/LICENSE.txt`. Earlier HTML/CSS and React/Vite implementations remain in Git history.

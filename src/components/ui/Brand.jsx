@@ -1,12 +1,13 @@
 import { useTranslations } from '../../i18n/useTranslations';
+import Link from 'next/link';
 
 export default function Brand() {
   const t = useTranslations('Common');
 
   return (
-    <a
+    <Link
       className="flex min-w-0 items-center gap-[0.65rem] text-lg leading-none font-black tracking-[-0.06em] rtl:text-base rtl:tracking-normal"
-      href="#top"
+      href="/#top"
       aria-label={t('homeLabel')}
     >
       <span
@@ -19,6 +20,6 @@ export default function Brand() {
           {t('brandCaption')}
         </span>
       </span>
-    </a>
+    </Link>
   );
 }

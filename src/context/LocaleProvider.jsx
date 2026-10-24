@@ -1,32 +1,30 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+'use client';
+
+import { useLayoutEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { LocaleContext } from './LocaleContext';
 import { messages } from '../messages';
+import { normalizeLocale } from '../i18n/locale';
 
-function getInitialLocale() {
-  try {
-    return localStorage.getItem('locale') === 'ar' ? 'ar' : 'en';
-  } catch {
-    return 'en';
+export default function LocaleProvider({ children, initialLocale }) {
+  const [locale, setCurrentLocale] = useState(initialLocale);
+  const router = useRouter();
+
+  function setLocale(value) {
+    const nextLocale = normalizeLocale(value);
+    const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+
+    document.cookie = `locale=${nextLocale}; Path=/; Max-Age=31536000; SameSite=Lax${secure}`;
+    setCurrentLocale(nextLocale);
+    router.refresh();
   }
-}
 
-export default function LocaleProvider({ children }) {
-  const [locale, setLocale] = useState(getInitialLocale);
-
-  // Apply direction before paint so a saved Arabic preference starts in RTL.
+  // Keep instant switching in sync while Next.js refreshes the server metadata.
   useLayoutEffect(() => {
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
     document.title = messages[locale].Metadata.title;
     document.querySelector('meta[name="description"]').content = messages[locale].Metadata.description;
-  }, [locale]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('locale', locale);
-    } catch {
-      // Keep switching available when browser storage is blocked.
-    }
   }, [locale]);
 
   return (

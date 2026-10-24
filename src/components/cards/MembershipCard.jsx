@@ -9,7 +9,8 @@ export default function MembershipCard({ plan, quantity, onQuantityChange }) {
   const t = useTranslations();
   const { locale } = useContext(LocaleContext);
   const numberLocale = locale === 'ar' ? 'ar-u-nu-arab' : 'en';
-  const estimatedTotal = plan.price * quantity;
+  const price = plan.priceFils / 100;
+  const estimatedTotal = (plan.priceFils * quantity) / 100;
 
   return (
     <article
@@ -39,7 +40,7 @@ export default function MembershipCard({ plan, quantity, onQuantityChange }) {
         <span className="text-[0.85rem]">
           {t('Common.currency')}
         </span>
-        <bdi>{plan.price.toLocaleString(numberLocale)}</bdi>
+        <bdi>{price.toLocaleString(numberLocale)}</bdi>
         <span className="text-[0.85rem] font-normal text-muted">
           {t('Common.pricePeriod')}
         </span>

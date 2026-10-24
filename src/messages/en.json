@@ -32,19 +32,27 @@
     "title": "Class Schedule",
     "description": "Strength, cardio and recovery. Find your next class.",
     "weeklySchedule": "Weekly schedule",
-    "weeklyClasses": "Weekly classes"
+    "weeklyClasses": "Weekly classes",
+    "empty": "No classes are scheduled in this category."
   },
   "ClassFilter": {
-    "label": "Filter classes by category"
+    "label": "Filter classes by category",
+    "all": "All",
+    "strength": "Strength",
+    "conditioning": "Conditioning",
+    "mobility": "Mobility",
+    "mixed": "Mixed training"
   },
   "TrainersSection": {
     "title": "Trainer Bios",
-    "description": "Thoughtful coaching. Support at every step."
+    "description": "Thoughtful coaching. Support at every step.",
+    "empty": "Trainer information will be available soon."
   },
   "MembershipSection": {
     "title": "Membership Tiers",
     "description": "Choose the plan that fits your routine.",
-    "estimatorDescription": "Prices are per person. Adjust the number of people to estimate your monthly cost."
+    "estimatorDescription": "Prices are per person. Adjust the number of people to estimate your monthly cost.",
+    "empty": "Membership plans will be available soon."
   },
   "Footer": {
     "description": "Strength, conditioning and mobility. Coaching for every level, progress at your pace.",
@@ -61,5 +69,35 @@
   "QuantityStepper": {
     "decrease": "Decrease quantity",
     "increase": "Increase quantity"
+  },
+  "StudioData": {
+    "loading": "Loading…",
+    "error": "We could not load this section. Please try again.",
+    "retry": "Try again"
+  },
+  "Auth": {
+    "login": "Sign in",
+    "signup": "Create account",
+    "logout": "Sign out",
+    "loginTitle": "Welcome back",
+    "signupTitle": "Join ELEVEN",
+    "loginDescription": "Sign in to your studio account.",
+    "signupDescription": "Create your studio account.",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "Use 8–128 characters.",
+    "pending": "Please wait…",
+    "hasAccount": "Already have an account?",
+    "newAccount": "New to ELEVEN?",
+    "invalidCredentials": "The email or password is incorrect.",
+    "accountExists": "An account with this email already exists. Sign in instead.",
+    "requestFailed": "We could not complete your request. Please try again.",
+    "retrySession": "Retry sign-in status"
+  },
+  "Navigation": {
+    "schedule": "Schedule",
+    "trainers": "Trainers",
+    "membership": "Membership"
   }
 }

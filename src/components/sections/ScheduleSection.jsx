@@ -1,13 +1,18 @@
+'use client';
+
 import { useState } from 'react';
 import { useTranslations } from '../../i18n/useTranslations';
-import { classes } from '../../data/classes';
-import { trainers } from '../../data/trainers';
+import { useQuery } from '../../hooks/useQuery';
 import ClassCard from '../cards/ClassCard';
 import ClassFilter from '../ui/ClassFilter';
 import Icon from '../ui/Icon';
+import QueryStatus from '../ui/QueryStatus';
 
 export default function ScheduleSection() {
   const t = useTranslations('ScheduleSection');
+  const { data, isLoading, error, refetch } = useQuery('/api/classes');
+  const failed = error || (!isLoading && !Array.isArray(data));
+  const classes = Array.isArray(data) ? data : [];
   const [category, setCategory] = useState('all');
 
   const visibleClasses = category === 'all'
@@ -33,22 +38,28 @@ export default function ScheduleSection() {
             {t('description')}
           </p>
         </div>
-        <ClassFilter value={category} onChange={handleCategoryChange} />
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-x-8 gap-y-2 text-[0.8rem] text-muted">
-          <p className="flex items-center gap-[0.65rem] font-bold text-text [&>svg]:text-accent">
-            <Icon name="calendar-03" />
-            <span>{t('weeklySchedule')}</span>
-          </p>
-        </div>
-        <ul className="grid gap-3" role="list" aria-label={t('weeklyClasses')}>
-          {visibleClasses.map((session) => (
-            <ClassCard
-              key={session.id}
-              session={session}
-              trainer={trainers.find((trainer) => trainer.id === session.trainerId)}
-            />
-          ))}
-        </ul>
+        <QueryStatus isLoading={isLoading} error={failed} refetch={refetch} />
+        {!isLoading && !failed && (
+          <>
+            <ClassFilter value={category} onChange={handleCategoryChange} />
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-x-8 gap-y-2 text-[0.8rem] text-muted">
+              <p className="flex items-center gap-[0.65rem] font-bold text-text [&>svg]:text-accent">
+                <Icon name="calendar-03" />
+                <span>{t('weeklySchedule')}</span>
+              </p>
+            </div>
+            <ul className="grid gap-3" role="list" aria-label={t('weeklyClasses')}>
+              {visibleClasses.length === 0 && <li className="py-6 text-muted">{t('empty')}</li>}
+              {visibleClasses.map((session) => (
+                <ClassCard
+                  key={session.id}
+                  session={session}
+                  trainer={session.trainer}
+                />
+              ))}
+            </ul>
+          </>
+        )}
       </div>
     </section>
   );

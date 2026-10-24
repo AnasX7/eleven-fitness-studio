@@ -1,3 +1,5 @@
+'use client';
+
 import { useTranslations } from '../../i18n/useTranslations';
 import ArrowIcon from '../ui/ArrowIcon';
 
